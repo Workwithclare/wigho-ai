@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WIHGO AI — Typography Improvement Preview</title>
+<style>
+  :root {
+    --black: #060B14;
+    --navy: #0A1628;
+    --teal: #14B8A6;
+    --teal-deep: #0F766E;
+    --silver: #C0C5CE;
+    --white: #FFFFFF;
+    --body: #E5E7EB;
+    --muted: #9CA3AF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--black);
+    color: var(--body);
+    font-family: Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    padding: 48px 24px;
+  }
+  .page { max-width: 860px; margin: 0 auto; background: var(--navy); border: 1px solid #1E293B; border-radius: 16px; padding: 56px 52px; }
+  .eyebrow {
+    color: var(--teal);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  h1 {
+    color: var(--white);
+    font-size: 52px;
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .lede {
+    color: var(--white);
+    font-size: 19px;
+    line-height: 1.55;
+    font-weight: 500;
+    max-width: 62ch;
+    margin-bottom: 40px;
+  }
+  h2 {
+    color: var(--silver);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-bottom: 1px solid #1E293B;
+    padding-bottom: 10px;
+    margin: 36px 0 14px 0;
+  }
+  h2 span { color: var(--teal); margin-right: 8px; }
+  p {
+    color: var(--body);
+    font-size: 16.5px;
+    line-height: 1.65;
+    max-width: 68ch;
+    margin-bottom: 12px;
+  }
+  .nudge {
+    margin-top: 20px;
+    background: #0B1F2A;
+    border: 1px solid var(--teal-deep);
+    border-left: 4px solid var(--teal);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .nudge strong { color: var(--white); font-size: 16.5px; display: block; margin-bottom: 4px; }
+  .nudge span { color: var(--body); font-size: 15.5px; }
+  .meta { margin-top: 32px; color: var(--muted); font-size: 13.5px; }
+</style>
+</head>
+<body>
+  <main class="page">
+    <div class="eyebrow">WIHGO AI &bull; Business Memory &amp; Attention</div>
+    <h1>Never lose the conversation behind your business.</h1>
+    <p class="lede">WIHGO AI remembers your commitments, understands what needs attention, and helps you act — without changing your deep teal, silver, and black palette.</p>
+
+    <h2><span>01</span> Remember</h2>
+    <p>Unified memory of Gmail, WhatsApp, and Instagram conversations. Personal memory and business memory stay separate. High-contrast body text (#E5E7EB on #0A1628) for easy reading.</p>
+
+    <h2><span>02</span> Understand &amp; Tell You</h2>
+    <p>Commitments, owners, and deadlines extracted automatically. Deadline-triggered nudges only — no real-time noise. Section headings use silver, uppercase, and tracking to stand apart from body copy.</p>
+
+    <div class="nudge">
+      <strong>You told Sarah you&rsquo;d send the quote by Friday — it&rsquo;s Thursday.</strong>
+      <span>Send it now? Draft is ready in your tone: Executive.</span>
+    </div>
+
+    <h2><span>03</span> Help You Act</h2>
+    <p>Tasks linked to source, editable drafts (never auto-sent), and a daily Catch Me Up brief. Main heading is 52px / 800 weight for clear hierarchy.</p>
+
+    <div class="meta">Visual change only: typography hierarchy + text contrast. Palette and layout unchanged.</div>
+  </main>
+</body>
+</html>

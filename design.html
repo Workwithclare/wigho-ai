@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WIHGO AI — Design System</title>
+<style>
+  :root {
+    --black: #060B14;
+    --navy: #0A1628;
+    --teal: #14B8A6;
+    --teal-deep: #0F766E;
+    --silver: #C0C5CE;
+    --white: #FFFFFF;
+    --body: #E5E7EB;
+    --muted: #9CA3AF;
+    --line: #1E293B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--black);
+    color: var(--body);
+    font-family: Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    padding: 48px 24px;
+  }
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    background: var(--navy);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 56px 52px;
+  }
+  .eyebrow {
+    color: var(--teal);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  h1 {
+    color: var(--white);
+    font-size: 60px;
+    line-height: 1.02;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin-bottom: 18px;
+  }
+  .lede {
+    color: var(--white);
+    font-size: 20px;
+    line-height: 1.55;
+    font-weight: 600;
+    max-width: 62ch;
+    margin-bottom: 40px;
+  }
+  h2 {
+    color: var(--silver);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px;
+    margin: 40px 0 18px 0;
+  }
+  p { color: var(--body); font-size: 16.5px; line-height: 1.65; max-width: 68ch; margin-bottom: 12px; }
+
+  /* 1. Color palette swatches */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .swatch {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #0B1F2A;
+  }
+  .swatch .chip { height: 64px; }
+  .swatch .label { padding: 10px 12px; }
+  .swatch .label strong { display: block; color: var(--white); font-size: 14px; }
+  .swatch .label span { color: var(--silver); font-size: 13px; }
+
+  /* 2. Typography samples */
+  .type-sample { background: #0B1F2A; border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px; margin-bottom: 12px; }
+  .type-sample .tag { color: var(--teal); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 8px; }
+  .type-h1 { color: var(--white); font-size: 40px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+  .type-h2 { color: var(--silver); font-size: 16px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+  .type-body { color: var(--body); font-size: 16.5px; line-height: 1.65; }
+
+  /* 3. Glowing teal button */
+  .btn {
+    display: inline-block;
+    background: var(--teal-deep);
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 28px;
+    cursor: pointer;
+    box-shadow: 0 0 18px rgba(20, 184, 166, 0.55), 0 0 42px rgba(20, 184, 166, 0.25);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .btn:hover { box-shadow: 0 0 26px rgba(20, 184, 166, 0.8), 0 0 60px rgba(20, 184, 166, 0.35); transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-note { color: var(--silver); font-size: 14px; margin-top: 10px; }
+
+  /* 4. Styled text input */
+  .field label { display: block; color: var(--silver); font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
+  .field input {
+    width: 100%;
+    background: #0B1F2A;
+    border: 1px solid var(--teal-deep);
+    border-radius: 10px;
+    color: var(--white);
+    font-size: 16px;
+    padding: 13px 16px;
+    outline: none;
+  }
+  .field input::placeholder { color: var(--muted); }
+  .field input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.25); }
+  .meta { margin-top: 36px; color: var(--silver); font-size: 14px; }
+</style>
+</head>
+<body>
+  <main class="page">
+    <div class="eyebrow">WIHGO AI &bull; Design System</div>
+    <h1>Deep teal, silver &amp; black.</h1>
+    <p class="lede">The WIHGO AI visual foundation: professional, mature, and modern — built for an AI business platform.</p>
+
+    <h2>Color palette</h2>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:#14B8A6"></div><div class="label"><strong>Teal Accent</strong><span>#14B8A6</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#0F766E"></div><div class="label"><strong>Deep Teal</strong><span>#0F766E</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#C0C5CE"></div><div class="label"><strong>Silver</strong><span>#C0C5CE</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#0A1628"></div><div class="label"><strong>Dark Navy</strong><span>#0A1628</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#060B14"></div><div class="label"><strong>Black</strong><span>#060B14</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#E5E7EB"></div><div class="label"><strong>Body Text</strong><span>#E5E7EB</span></div></div>
+    </div>
+
+    <h2>Typography</h2>
+    <div class="type-sample">
+      <div class="tag">Heading / H1 — 40px / 800 / White</div>
+      <div class="type-h1">Never lose the conversation behind your business.</div>
+    </div>
+    <div class="type-sample">
+      <div class="tag">Section heading / H2 — 16px / 800 / Silver / Uppercase</div>
+      <div class="type-h2">Attention items — mock memory</div>
+    </div>
+    <div class="type-sample">
+      <div class="tag">Body — 16.5px / #E5E7EB on dark</div>
+      <div class="type-body">WIHGO AI remembers your commitments, understands what needs attention, and helps you act. Body copy stays high-contrast against the dark navy background for easy readability.</div>
+    </div>
+
+    <h2>Button</h2>
+    <p>Teal accent button with a glow effect. Click it to see the pressed state.</p>
+    <button class="btn" id="demoBtn" type="button">Catch Me Up</button>
+    <div class="btn-note" id="btnNote">Mock only — no action wired.</div>
+
+    <h2>Text input</h2>
+    <div class="field">
+      <label for="demoInput">Search business memory (mock)</label>
+      <input id="demoInput" type="text" placeholder="Try &quot;Sarah quote Friday&quot;…" autocomplete="off" />
+    </div>
+
+    <div class="meta">Static file — no build step, no packages. Open directly in a browser. Mock data only.</div>
+  </main>
+
+<script>
+  // Tiny demo wiring (vanilla JS, no dependencies).
+  (function () {
+    var btn = document.getElementById('demoBtn');
+    var note = document.getElementById('btnNote');
+    btn.addEventListener('click', function () {
+      note.textContent = '✓ Button works — brief would open here (mock).';
+    });
+  })();
+</script>
+</body>
+</html>

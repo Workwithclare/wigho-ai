@@ -1,0 +1,18 @@
+:root {
+  --black: #060b14;
+  --navy: #0a1628;
+  --teal: #14b8a6;
+  --teal-deep: #0f766e;
+  --silver: #c0c5ce;
+  --white: #ffffff;
+  --body: #e5e7eb;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--black);
+  color: var(--body);
+  font-family: Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+}

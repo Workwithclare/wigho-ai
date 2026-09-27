@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WIHGO AI — Dashboard (Prototype)</title>
+<style>
+  :root {
+    --black: #060B14;
+    --navy: #0A1628;
+    --card: #0B1F2A;
+    --teal: #14B8A6;
+    --teal-deep: #0F766E;
+    --silver: #C0C5CE;
+    --white: #FFFFFF;
+    --body: #E5E7EB;
+    --muted: #9CA3AF;
+    --line: #1E293B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--black);
+    color: var(--body);
+    font-family: Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    padding: 40px 20px 64px;
+  }
+  .page { max-width: 920px; margin: 0 auto; }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .brand { color: var(--teal); font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
+  .mock-badge {
+    color: var(--silver); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; background: var(--navy);
+  }
+  h1 { color: var(--white); font-size: 44px; line-height: 1.08; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .sub { color: var(--white); font-size: 18px; font-weight: 500; margin-bottom: 24px; }
+  .card {
+    background: var(--navy); border: 1px solid var(--line); border-radius: 14px;
+    padding: 24px 26px; margin-bottom: 16px;
+  }
+  .card.accent { background: var(--card); border: 1px solid var(--teal-deep); border-left: 4px solid var(--teal); }
+  h2 {
+    color: var(--silver); font-size: 15px; font-weight: 800; letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  h2 .n { color: var(--teal); margin-right: 8px; }
+  .brief-summary { color: var(--body); font-size: 16.5px; }
+  .brief-summary strong { color: var(--white); }
+  .brief-detail { display: none; margin-top: 12px; color: var(--body); font-size: 15.5px; }
+  .brief-detail.open { display: block; }
+  .btn {
+    display: inline-block; margin-top: 14px;
+    background: var(--teal-deep); color: var(--white);
+    font-size: 15px; font-weight: 700; border: none; border-radius: 10px;
+    padding: 12px 24px; cursor: pointer;
+    box-shadow: 0 0 18px rgba(20, 184, 166, 0.55), 0 0 42px rgba(20, 184, 166, 0.25);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .btn:hover { box-shadow: 0 0 26px rgba(20, 184, 166, 0.8), 0 0 60px rgba(20, 184, 166, 0.35); transform: translateY(-1px); }
+  .msg { display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .msg:first-of-type { border-top: none; padding-top: 0; }
+  .avatar {
+    flex: none; width: 42px; height: 42px; border-radius: 50%;
+    background: var(--teal-deep); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 16px;
+  }
+  .msg-body { flex: 1; min-width: 0; }
+  .msg-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 2px; }
+  .msg-head strong { color: var(--white); font-size: 16px; }
+  .platform {
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    border-radius: 999px; padding: 3px 10px;
+  }
+  .platform.gmail { background: rgba(20,184,166,0.15); color: var(--teal); border: 1px solid var(--teal-deep); }
+  .platform.whatsapp { background: rgba(192,197,206,0.12); color: var(--silver); border: 1px solid var(--line); }
+  .platform.instagram { background: rgba(15,118,110,0.25); color: var(--white); border: 1px solid var(--teal-deep); }
+  .msg-text { color: var(--body); font-size: 15.5px; }
+  .msg-time { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .task { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .task:first-of-type { border-top: none; padding-top: 0; }
+  .task input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--teal); cursor: pointer; flex: none; }
+  .task label { color: var(--body); font-size: 15.5px; cursor: pointer; flex: 1; }
+  .task.done label { text-decoration: line-through; color: var(--muted); }
+  .task .due { flex: none; color: var(--silver); font-size: 13px; }
+  .task .due.overdue { color: var(--teal); font-weight: 700; }
+  .foot { margin-top: 20px; color: var(--silver); font-size: 13.5px; text-align: center; }
+</style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <div class="brand">WIHGO AI &bull; Business Memory &amp; Attention</div>
+      <div class="mock-badge">Prototype &bull; Mock data only</div>
+    </div>
+
+    <h1>Welcome back, Clare</h1>
+    <p class="sub">Good morning — here&rsquo;s what needs your attention today.</p>
+
+    <!-- Catch Me Up summary card -->
+    <section class="card accent" aria-label="Catch Me Up summary">
+      <h2><span class="n">—</span>Catch Me Up</h2>
+      <p class="brief-summary"><strong>3 open items:</strong> 1 overdue, 1 due soon, 1 draft ready. Top priority: send Sarah the quote before Friday.</p>
+      <div class="brief-detail" id="briefDetail">
+        <p>1. Sarah&rsquo;s quote is due Friday — draft it today so Thursday stays free for review.</p>
+        <p>2. David&rsquo;s invoice #104 is 2 days overdue — nudge him this morning.</p>
+        <p>3. Amara&rsquo;s reply draft is ready in your Executive tone — review and send.</p>
+      </div>
+      <button class="btn" id="briefBtn" type="button">Show full brief</button>
+    </section>
+
+    <!-- Messages -->
+    <section class="card" aria-label="Recent messages">
+      <h2><span class="n">01</span>Recent messages</h2>
+
+      <div class="msg">
+        <div class="avatar">S</div>
+        <div class="msg-body">
+          <div class="msg-head"><strong>Sarah Mensah</strong><span class="platform gmail">Gmail</span></div>
+          <p class="msg-text">&ldquo;Hi Clare! Just checking in — will the quote be ready by Friday as promised?&rdquo;</p>
+          <div class="msg-time">Mock thread #4821 &bull; 2h ago &bull; commitment detected: quote due Friday</div>
+        </div>
+      </div>
+
+      <div class="msg">
+        <div class="avatar">D</div>
+        <div class="msg-body">
+          <div class="msg-head"><strong>David Okafor</strong><span class="platform whatsapp">WhatsApp</span></div>
+          <p class="msg-text">&ldquo;Received invoice #104, will pay early next week. Thanks for your patience!&rdquo;</p>
+          <div class="msg-time">Mock chat &bull; yesterday &bull; nudge scheduled: follow up in 3 days</div>
+        </div>
+      </div>
+
+      <div class="msg">
+        <div class="avatar">A</div>
+        <div class="msg-body">
+          <div class="msg-head"><strong>Amara Lee</strong><span class="platform instagram">Instagram</span></div>
+          <p class="msg-text">&ldquo;Loved your latest work! Can we book a call Thursday to discuss the project?&rdquo;</p>
+          <div class="msg-time">Mock DM &bull; yesterday &bull; draft reply ready in Executive tone</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tasks preview -->
+    <section class="card" aria-label="Tasks preview">
+      <h2><span class="n">02</span>Tasks preview</h2>
+      <div class="task" id="task1">
+        <input type="checkbox" id="t1" />
+        <label for="t1">Send Sarah the quote (linked to Gmail thread #4821)</label>
+        <span class="due">Due Friday</span>
+      </div>
+      <div class="task" id="task2">
+        <input type="checkbox" id="t2" />
+        <label for="t2">Follow up on invoice #104 with David</label>
+        <span class="due overdue">Overdue 2d</span>
+      </div>
+      <div class="task" id="task3">
+        <input type="checkbox" id="t3" />
+        <label for="t3">Review Amara&rsquo;s draft reply and send</label>
+        <span class="due">Today</span>
+      </div>
+    </section>
+
+    <p class="foot">WIHGO AI prototype — plain HTML/CSS/JS. No server, no packages, no credentials. Mock data only.</p>
+  </main>
+
+<script>
+  // Vanilla JS interactions (no dependencies, works from file://).
+  (function () {
+    // 1. Catch Me Up expand/collapse (working button).
+    var btn = document.getElementById('briefBtn');
+    var detail = document.getElementById('briefDetail');
+    btn.addEventListener('click', function () {
+      var open = detail.classList.toggle('open');
+      btn.textContent = open ? 'Hide full brief' : 'Show full brief';
+    });
+
+    // 2. Task checkboxes strike through + count in header note.
+    var boxes = document.querySelectorAll('.task input[type="checkbox"]');
+    boxes.forEach(function (box) {
+      box.addEventListener('change', function () {
+        box.closest('.task').classList.toggle('done', box.checked);
+      });
+    });
+  })();
+</script>
+</body>
+</html>
