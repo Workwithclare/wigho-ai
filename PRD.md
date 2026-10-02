@@ -95,13 +95,14 @@ Prototype runtime notes:
 
 - No user accounts or authentication accounts are being created yet at this local prototype stage — the current `index.html` prototype runs entirely in the browser with mock data and no sign-in, and Better Auth wiring is deferred to the next phase.
 - File storage (Cloudflare R2) is planned but not yet connected — no buckets, uploads, or storage calls exist in the prototype; the storage layer will be introduced via the S3-compatible API with test placeholders when ingestion begins.
-- App, database, and auth run locally via Docker for this assessment — no public deployment.
+- Production deployment: Netlify (managed hosting — builds and deploys directly from GitHub, handles HTTPS/CDN automatically).
+- Local development: Docker (running Postgres and supporting services in containers on the developer's own machine, matching production configuration, but not running production itself).
+- Dev workflow: GitHub for source control and CI/CD, Docker for local development only (production runs on Netlify, not in these containers), OpenCode for AI-assisted build sessions, ZeptoMail for transactional email.
+- Open item: Netlify does not host a database. A managed PostgreSQL provider (e.g. Neon, Railway, or Render) still needs to be chosen — this is an unresolved decision.
 - PostgreSQL runs as a local self-managed Docker container with local test/mock data only.
 - Better Auth runs locally with local test users only — no working sign-in against production data.
 - Cloudflare R2 is used via its S3-compatible API. In the local prototype it is accessed with placeholder/test credentials and test buckets only, or a local S3-compatible stub where appropriate. No production buckets, no real credentials.
 - Haystack is used for AI/retrieval (extraction + memory search) against local test/mock data only.
-- ZeptoMail, Cloudflare edge/DNS, and Caddy HTTPS are config placeholders / stubbed interfaces in this phase — no live email delivery, no public DNS/CDN wiring.
-- GitHub + GitHub Actions are for source control and basic CI checks (lint/build) only in this phase — no production deploy pipeline.
 - `.env.example` contains placeholder-only keys. Real `.env` files are git-ignored and never committed.
 - No database tests in this assessment phase unless explicitly added later.
 
