@@ -1,11 +1,14 @@
 :root {
-  --black: #060b14;
-  --navy: #0a1628;
-  --teal: #14b8a6;
-  --teal-deep: #0f766e;
-  --silver: #c0c5ce;
+  --teal-dark: #073f42;
+  --teal: #0b5c5b;
+  --teal-glow: #14b8a6;
+  --silver: #c7cdd1;
+  --black: #081012;
+  --panel: #0c1a1c;
+  --panel-2: #0e2224;
   --white: #ffffff;
-  --body: #e5e7eb;
+  --offwhite: #f4f7f7;
+  --muted: #7a8a8d;
 }
 
 * { box-sizing: border-box; }
@@ -13,6 +16,6 @@
 body {
   margin: 0;
   background: var(--black);
-  color: var(--body);
-  font-family: Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--offwhite);
+  font-family: 'Poppins', -apple-system, "Segoe UI", Roboto, sans-serif;
 }

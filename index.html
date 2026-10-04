@@ -3,188 +3,411 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>WIHGO AI — Dashboard (Prototype)</title>
+<title>WIHGO AI — Connect Hub (Dashboard Prototype)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --black: #060B14;
-    --navy: #0A1628;
-    --card: #0B1F2A;
-    --teal: #14B8A6;
-    --teal-deep: #0F766E;
-    --silver: #C0C5CE;
+    --teal-dark: #073F42;
+    --teal: #0B5C5B;
+    --teal-glow: #14B8A6;
+    --silver: #C7CDD1;
+    --black: #081012;
+    --panel: #0C1A1C;
+    --panel-2: #0E2224;
     --white: #FFFFFF;
-    --body: #E5E7EB;
-    --muted: #9CA3AF;
-    --line: #1E293B;
+    --offwhite: #F4F7F7;
+    --muted: #7A8A8D;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     background: var(--black);
-    color: var(--body);
-    font-family: Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
-    line-height: 1.6;
-    padding: 40px 20px 64px;
+    color: var(--offwhite);
+    font-family: 'Poppins', -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px; line-height: 1.55;
+    padding: 16px;
   }
-  .page { max-width: 920px; margin: 0 auto; }
-  .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 12px; flex-wrap: wrap; margin-bottom: 20px;
+  .app {
+    max-width: 1440px; margin: 0 auto;
+    display: grid; grid-template-columns: 230px 1fr;
+    gap: 16px;
   }
-  .brand { color: var(--teal); font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
-  .mock-badge {
-    color: var(--silver); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; background: var(--navy);
+  /* Sidebar */
+  .sidebar {
+    background: var(--panel);
+    border: 1px solid var(--teal-dark);
+    border-radius: 14px; padding: 20px 14px;
+    display: flex; flex-direction: column; gap: 4px;
+    position: sticky; top: 16px; align-self: start;
   }
-  h1 { color: var(--white); font-size: 44px; line-height: 1.08; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
-  .sub { color: var(--white); font-size: 18px; font-weight: 500; margin-bottom: 24px; }
-  .card {
-    background: var(--navy); border: 1px solid var(--line); border-radius: 14px;
-    padding: 24px 26px; margin-bottom: 16px;
+  .side-brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px; }
+  .side-brand svg { width: 34px; height: auto; flex: none; }
+  .side-brand .n { color: var(--white); font-weight: 700; font-size: 15px; letter-spacing: 0.03em; }
+  .side-brand .n span { color: var(--teal-glow); }
+  .side-brand .h { color: var(--teal-glow); font-size: 9px; font-weight: 500; letter-spacing: 0.3em; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--offwhite); font-size: 14px; font-weight: 500;
+    padding: 10px 12px; border-radius: 10px; cursor: pointer; border: none; background: none;
+    font-family: inherit; width: 100%; text-align: left;
   }
-  .card.accent { background: var(--card); border: 1px solid var(--teal-deep); border-left: 4px solid var(--teal); }
-  h2 {
-    color: var(--silver); font-size: 15px; font-weight: 800; letter-spacing: 0.14em;
-    text-transform: uppercase; margin-bottom: 14px;
+  .nav-item:hover { background: #123032; }
+  .nav-item.active { background: var(--teal); color: var(--white); font-weight: 600; }
+  .nav-item .ic { width: 20px; text-align: center; }
+  .user-card {
+    margin-top: auto; display: flex; align-items: center; gap: 10px;
+    background: var(--panel-2); border: 1px solid var(--teal-dark);
+    border-radius: 10px; padding: 10px 12px;
   }
-  h2 .n { color: var(--teal); margin-right: 8px; }
-  .brief-summary { color: var(--body); font-size: 16.5px; }
-  .brief-summary strong { color: var(--white); }
-  .brief-detail { display: none; margin-top: 12px; color: var(--body); font-size: 15.5px; }
-  .brief-detail.open { display: block; }
+  .user-card .ava {
+    width: 36px; height: 36px; border-radius: 50%; flex: none;
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+    color: var(--white); display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 14px;
+  }
+  .user-card strong { display: block; color: var(--white); font-size: 13px; }
+  .user-card span { color: var(--silver); font-size: 11.5px; }
+  /* Main */
+  .main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .header h1 { color: var(--white); font-size: 26px; font-weight: 600; }
+  .header .sub { color: var(--silver); font-size: 13.5px; font-weight: 400; }
+  .header .spacer { flex: 1; }
+  .search {
+    background: var(--panel); border: 1px solid var(--teal-dark); border-radius: 10px;
+    color: var(--white); font-family: inherit; font-size: 13.5px;
+    padding: 10px 14px; width: 260px; outline: none;
+  }
+  .search::placeholder { color: var(--muted); }
+  .search:focus { border-color: var(--teal-glow); box-shadow: 0 0 0 3px rgba(20,184,166,0.2); }
+  .icon-btn {
+    position: relative; width: 42px; height: 42px; border-radius: 50%;
+    background: var(--panel); border: 1px solid var(--teal-dark);
+    color: var(--offwhite); font-size: 17px; cursor: pointer;
+  }
+  .icon-btn .badge {
+    position: absolute; top: -4px; right: -4px;
+    background: var(--teal-glow); color: var(--black);
+    font-size: 10.5px; font-weight: 700;
+    min-width: 18px; height: 18px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center; padding: 0 5px;
+  }
   .btn {
-    display: inline-block; margin-top: 14px;
-    background: var(--teal-deep); color: var(--white);
-    font-size: 15px; font-weight: 700; border: none; border-radius: 10px;
-    padding: 12px 24px; cursor: pointer;
-    box-shadow: 0 0 18px rgba(20, 184, 166, 0.55), 0 0 42px rgba(20, 184, 166, 0.25);
+    background: var(--teal); color: var(--white);
+    font-family: inherit; font-size: 14px; font-weight: 600;
+    border: none; border-radius: 10px; padding: 11px 20px; cursor: pointer;
+    box-shadow: 0 0 16px rgba(20,184,166,0.45);
     transition: box-shadow 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
   }
-  .btn:hover { box-shadow: 0 0 26px rgba(20, 184, 166, 0.8), 0 0 60px rgba(20, 184, 166, 0.35); transform: translateY(-1px); }
-  .msg { display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid var(--line); }
-  .msg:first-of-type { border-top: none; padding-top: 0; }
-  .avatar {
-    flex: none; width: 42px; height: 42px; border-radius: 50%;
-    background: var(--teal-deep); color: var(--white);
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 16px;
+  .btn:hover { box-shadow: 0 0 24px rgba(20,184,166,0.7); transform: translateY(-1px); }
+  /* Stat cards */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .stat {
+    background: var(--panel); border: 1px solid var(--teal-dark);
+    border-radius: 14px; padding: 18px; display: flex; gap: 14px; align-items: center;
   }
-  .msg-body { flex: 1; min-width: 0; }
-  .msg-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 2px; }
-  .msg-head strong { color: var(--white); font-size: 16px; }
-  .platform {
-    font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    border-radius: 999px; padding: 3px 10px;
+  .stat .tile {
+    width: 46px; height: 46px; border-radius: 12px; flex: none;
+    background: rgba(20,184,166,0.14); border: 1px solid var(--teal-dark);
+    display: flex; align-items: center; justify-content: center; font-size: 21px;
   }
-  .platform.gmail { background: rgba(20,184,166,0.15); color: var(--teal); border: 1px solid var(--teal-deep); }
-  .platform.whatsapp { background: rgba(192,197,206,0.12); color: var(--silver); border: 1px solid var(--line); }
-  .platform.instagram { background: rgba(15,118,110,0.25); color: var(--white); border: 1px solid var(--teal-deep); }
-  .msg-text { color: var(--body); font-size: 15.5px; }
-  .msg-time { color: var(--muted); font-size: 13px; margin-top: 2px; }
-  .task { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
-  .task:first-of-type { border-top: none; padding-top: 0; }
-  .task input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--teal); cursor: pointer; flex: none; }
-  .task label { color: var(--body); font-size: 15.5px; cursor: pointer; flex: 1; }
+  .stat .num { color: var(--white); font-size: 26px; font-weight: 600; line-height: 1.1; }
+  .stat .lbl { color: var(--silver); font-size: 12.5px; }
+  .stat .up { color: var(--teal-glow); font-size: 12px; font-weight: 500; }
+  /* Content grid */
+  .grid { display: grid; grid-template-columns: 1.25fr 1.25fr 1fr; gap: 16px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--teal-dark);
+    border-radius: 14px; padding: 20px;
+  }
+  .card h3 { color: var(--white); font-size: 15.5px; font-weight: 600; margin-bottom: 4px; }
+  .card .hint { color: var(--silver); font-size: 12.5px; margin-bottom: 14px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; }
+  .tab {
+    font-family: inherit; font-size: 12.5px; font-weight: 500;
+    background: none; border: 1px solid var(--teal-dark); color: var(--offwhite);
+    border-radius: 999px; padding: 5px 14px; cursor: pointer;
+  }
+  .tab.active { background: var(--teal); border-color: var(--teal); color: var(--white); }
+  .tab.latest { margin-left: auto; }
+  .msg { display: flex; gap: 12px; padding: 11px 0; border-top: 1px solid var(--teal-dark); align-items: flex-start; }
+  .msg .pic {
+    width: 38px; height: 38px; border-radius: 10px; flex: none;
+    display: flex; align-items: center; justify-content: center; font-size: 19px; color: var(--white);
+  }
+  .msg .body { flex: 1; min-width: 0; }
+  .msg .row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .msg strong { color: var(--white); font-size: 13.5px; font-weight: 600; }
+  .msg time { color: var(--muted); font-size: 11.5px; flex: none; }
+  .msg p { color: var(--silver); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .msg .count {
+    flex: none; background: var(--teal-glow); color: var(--black);
+    font-size: 11px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; align-self: center;
+  }
+  .link { color: var(--teal-glow); font-size: 13px; font-weight: 500; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; margin-top: 12px; }
+  /* Platforms */
+  .plats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .plat {
+    background: var(--panel-2); border: 1px solid var(--teal-dark);
+    border-radius: 10px; padding: 12px; display: flex; gap: 10px; align-items: center;
+  }
+  .plat .pic { width: 34px; height: 34px; border-radius: 9px; flex: none; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--white); }
+  .plat strong { display: block; color: var(--white); font-size: 13px; font-weight: 600; }
+  .plat span { color: var(--teal-glow); font-size: 11.5px; }
+  .plat span::before { content: "● "; font-size: 9px; }
+  /* AI Assistant */
+  .ai-hero { text-align: center; padding: 6px 0 12px; }
+  .ai-orb {
+    width: 74px; height: 74px; margin: 0 auto 10px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #2ad4c0, var(--teal) 55%, var(--teal-dark));
+    box-shadow: 0 0 28px rgba(20,184,166,0.6);
+    display: flex; align-items: center; justify-content: center; font-size: 34px;
+  }
+  .ai-hero strong { color: var(--white); font-size: 15px; }
+  .ai-hero p { color: var(--silver); font-size: 13px; }
+  .ai-opt {
+    width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 8px;
+    background: var(--panel-2); border: 1px solid var(--teal-dark); color: var(--offwhite);
+    font-family: inherit; font-size: 12.5px; border-radius: 10px; padding: 11px 14px;
+    margin-bottom: 8px; cursor: pointer; text-align: left;
+  }
+  .ai-opt:hover { border-color: var(--teal-glow); }
+  .ai-opt span { color: var(--teal-glow); }
+  .btn.block { width: 100%; margin-top: 6px; }
+  /* Right rail */
+  .rail { display: flex; flex-direction: column; gap: 16px; }
+  .layout-3 { display: grid; grid-template-columns: 1fr 300px; gap: 16px; align-items: start; }
+  .cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .cal-head strong { color: var(--white); font-size: 14px; }
+  .cal-head span { color: var(--silver); font-size: 12.5px; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; font-size: 11.5px; }
+  .cal-grid .dow { color: var(--muted); font-weight: 600; padding: 4px 0; }
+  .cal-grid .day { color: var(--silver); padding: 5px 0; border-radius: 6px; }
+  .cal-grid .day.sel { background: var(--teal-glow); color: var(--black); font-weight: 700; }
+  .up-item { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-top: 1px solid var(--teal-dark); font-size: 12.5px; }
+  .up-item .dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex: none; }
+  .up-item strong { display: block; color: var(--white); font-weight: 600; font-size: 13px; }
+  .up-item span { color: var(--muted); font-size: 12px; }
+  .task { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 9px 0; border-top: 1px solid var(--teal-dark); font-size: 13px; }
+  .task input { width: 17px; height: 17px; accent-color: var(--teal-glow); cursor: pointer; }
+  .task label { flex: 1; color: var(--offwhite); cursor: pointer; }
   .task.done label { text-decoration: line-through; color: var(--muted); }
-  .task .due { flex: none; color: var(--silver); font-size: 13px; }
-  .task .due.overdue { color: var(--teal); font-weight: 700; }
-  .foot { margin-top: 20px; color: var(--silver); font-size: 13.5px; text-align: center; }
+  .task .frac { color: var(--silver); font-size: 12px; }
+  .task .frac.ok { color: var(--teal-glow); font-weight: 600; }
+  /* Footer strip */
+  .strip {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+    background: var(--panel); border: 1px solid var(--teal-dark);
+    border-radius: 14px; padding: 20px 26px; margin-top: 16px;
+  }
+  .strip .item { display: flex; gap: 12px; align-items: center; }
+  .strip .ic { color: var(--teal-glow); font-size: 24px; }
+  .strip strong { display: block; color: var(--white); font-size: 13.5px; font-weight: 600; }
+  .strip span { color: var(--silver); font-size: 12.5px; }
+  .foot { text-align: center; color: var(--muted); font-size: 12px; margin-top: 14px; }
+  @media (max-width: 1100px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { position: static; flex-direction: row; flex-wrap: wrap; align-items: center; }
+    .nav-item { width: auto; }
+    .user-card { margin-top: 0; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .grid, .layout-3 { grid-template-columns: 1fr; }
+    .strip { grid-template-columns: 1fr 1fr; }
+  }
 </style>
 </head>
 <body>
-  <main class="page">
-    <div class="topbar">
-      <div class="brand">WIHGO AI &bull; Business Memory &amp; Attention</div>
-      <div class="mock-badge">Prototype &bull; Mock data only</div>
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="side-brand">
+      <svg viewBox="0 0 120 70" aria-label="WIHGO AI logo">
+        <path d="M8 10 L28 60 L45 25 L62 60 L82 10 L66 10 L54 38 L45 18 L36 38 L24 10 Z" fill="#0B5C5B"/>
+        <path d="M82 10 L98 42 L112 10 L96 10 L90 24 L84 10 Z" fill="#C7CDD1"/>
+        <circle cx="112" cy="8" r="6" fill="#C7CDD1"/>
+      </svg>
+      <div><div class="n">WIHGO <span>AI</span></div><div class="h">CONNECT HUB</div></div>
+    </div>
+    <button class="nav-item active" type="button"><span class="ic">⌂</span>Dashboard</button>
+    <button class="nav-item" type="button" data-mock="Messages"><span class="ic">✉</span>Messages</button>
+    <button class="nav-item" type="button" data-mock="Connections"><span class="ic">⛓</span>Connections</button>
+    <button class="nav-item" type="button" data-mock="Contacts"><span class="ic">👤</span>Contacts</button>
+    <button class="nav-item" type="button" data-mock="AI Assistant"><span class="ic">✦</span>AI Assistant</button>
+    <button class="nav-item" type="button" data-mock="Calendar"><span class="ic">📅</span>Calendar</button>
+    <button class="nav-item" type="button" data-mock="Analytics"><span class="ic">📊</span>Analytics</button>
+    <button class="nav-item" type="button" data-mock="Automation"><span class="ic">⚙</span>Automation</button>
+    <button class="nav-item" type="button" data-mock="Settings"><span class="ic">🔧</span>Settings</button>
+    <div class="user-card">
+      <div class="ava">C</div>
+      <div><strong>Clare Igwe</strong><span>clare@wihgo.ai</span></div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="header">
+      <div>
+        <h1>Welcome back, Clare! 👋</h1>
+        <div class="sub">Here&rsquo;s what&rsquo;s happening with your hub today.</div>
+      </div>
+      <div class="spacer"></div>
+      <input class="search" id="search" type="text" placeholder="Search messages, contacts…" autocomplete="off" />
+      <button class="icon-btn" id="bellBtn" type="button" aria-label="Notifications">🔔<span class="badge">3</span></button>
+      <button class="icon-btn" type="button" aria-label="Help">?</button>
+      <button class="btn" id="addBtn" type="button">+ Add Connection</button>
     </div>
 
-    <h1>Welcome back, Clare</h1>
-    <p class="sub">Good morning — here&rsquo;s what needs your attention today.</p>
+    <div class="stats">
+      <div class="stat"><div class="tile">💬</div><div><div class="num">128</div><div class="lbl">Total Messages</div><div class="up">↑ 18% vs last 7 days</div></div></div>
+      <div class="stat"><div class="tile">👥</div><div><div class="num">24</div><div class="lbl">Connections</div><div class="up">↑ 12% vs last 7 days</div></div></div>
+      <div class="stat"><div class="tile">📅</div><div><div class="num">12</div><div class="lbl">Tasks Due</div><div class="up">↑ 8% vs last 7 days</div></div></div>
+      <div class="stat"><div class="tile">📈</div><div><div class="num">8</div><div class="lbl">Automations</div><div class="up">↑ 15% vs last 7 days</div></div></div>
+    </div>
 
-    <!-- Catch Me Up summary card -->
-    <section class="card accent" aria-label="Catch Me Up summary">
-      <h2><span class="n">—</span>Catch Me Up</h2>
-      <p class="brief-summary"><strong>3 open items:</strong> 1 overdue, 1 due soon, 1 draft ready. Top priority: send Sarah the quote before Friday.</p>
-      <div class="brief-detail" id="briefDetail">
-        <p>1. Sarah&rsquo;s quote is due Friday — draft it today so Thursday stays free for review.</p>
-        <p>2. David&rsquo;s invoice #104 is 2 days overdue — nudge him this morning.</p>
-        <p>3. Amara&rsquo;s reply draft is ready in your Executive tone — review and send.</p>
-      </div>
-      <button class="btn" id="briefBtn" type="button">Show full brief</button>
-    </section>
+    <div class="layout-3">
+      <div class="grid" style="grid-template-columns: 1fr 1fr;">
+        <section class="card">
+          <h3>All Messages</h3>
+          <div class="tabs">
+            <button class="tab active" data-filter="all" type="button">All</button>
+            <button class="tab" data-filter="unread" type="button">Unread</button>
+            <button class="tab" data-filter="starred" type="button">Starred</button>
+            <button class="tab latest" type="button" id="latestBtn">Latest ⌄</button>
+          </div>
+          <div id="msgList">
+            <div class="msg" data-unread="1" data-starred="0">
+              <div class="pic" style="background:#25D366">✆</div>
+              <div class="body"><div class="row"><strong>WhatsApp</strong><time>10:30 AM</time></div><p>Hello, I need more information about your services.</p></div>
+              <div class="count">2</div>
+            </div>
+            <div class="msg" data-unread="1" data-starred="1">
+              <div class="pic" style="background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF)">📷</div>
+              <div class="body"><div class="row"><strong>Instagram</strong><time>10:15 AM</time></div><p>Can you send me your pricing?</p></div>
+              <div class="count">1</div>
+            </div>
+            <div class="msg" data-unread="0" data-starred="0">
+              <div class="pic" style="background:#FFFFFF;color:#EA4335">M</div>
+              <div class="body"><div class="row"><strong>Gmail</strong><time>09:45 AM</time></div><p>Partnership proposal for collaboration.</p></div>
+            </div>
+            <div class="msg" data-unread="0" data-starred="1">
+              <div class="pic" style="background:#0A66C2">in</div>
+              <div class="body"><div class="row"><strong>LinkedIn</strong><time>09:20 AM</time></div><p>Thanks for connecting!</p></div>
+            </div>
+          </div>
+          <button class="link" type="button" data-mock="View all messages">View all messages →</button>
+        </section>
 
-    <!-- Messages -->
-    <section class="card" aria-label="Recent messages">
-      <h2><span class="n">01</span>Recent messages</h2>
+        <section class="card">
+          <h3>Connected Platforms</h3>
+          <div class="hint">Manage all your integrations in one place.</div>
+          <div class="plats">
+            <div class="plat"><div class="pic" style="background:#25D366">✆</div><div><strong>WhatsApp</strong><span>Connected</span></div></div>
+            <div class="plat"><div class="pic" style="background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF)">📷</div><div><strong>Instagram</strong><span>Connected</span></div></div>
+            <div class="plat"><div class="pic" style="background:#FFFFFF;color:#EA4335">M</div><div><strong>Gmail</strong><span>Connected</span></div></div>
+            <div class="plat"><div class="pic" style="background:#FFFFFF;color:#0B5C5B">📅</div><div><strong>Google Calendar</strong><span>Connected</span></div></div>
+            <div class="plat"><div class="pic" style="background:#4A154B">✳</div><div><strong>Slack</strong><span>Connected</span></div></div>
+            <div class="plat"><div class="pic" style="background:#0A66C2">in</div><div><strong>LinkedIn</strong><span>Connected</span></div></div>
+          </div>
+          <button class="link" type="button" data-mock="Manage Connections">Manage Connections →</button>
+        </section>
 
-      <div class="msg">
-        <div class="avatar">S</div>
-        <div class="msg-body">
-          <div class="msg-head"><strong>Sarah Mensah</strong><span class="platform gmail">Gmail</span></div>
-          <p class="msg-text">&ldquo;Hi Clare! Just checking in — will the quote be ready by Friday as promised?&rdquo;</p>
-          <div class="msg-time">Mock thread #4821 &bull; 2h ago &bull; commitment detected: quote due Friday</div>
-        </div>
+        <section class="card" style="grid-column: 1 / -1;">
+          <h3>AI Assistant</h3>
+          <div class="ai-hero">
+            <div class="ai-orb">🤖</div>
+            <strong>Hello Clare! 👋</strong>
+            <p>How can I help you today?</p>
+          </div>
+          <button class="ai-opt" type="button" data-mock="Summarize unread messages">Summarize unread messages <span>›</span></button>
+          <button class="ai-opt" type="button" data-mock="Schedule a follow-up reminder">Schedule a follow-up reminder <span>›</span></button>
+          <button class="ai-opt" type="button" data-mock="Show my top performing channels">Show my top performing channels <span>›</span></button>
+          <button class="btn block" id="chatBtn" type="button">✦ Start New Chat</button>
+        </section>
       </div>
 
-      <div class="msg">
-        <div class="avatar">D</div>
-        <div class="msg-body">
-          <div class="msg-head"><strong>David Okafor</strong><span class="platform whatsapp">WhatsApp</span></div>
-          <p class="msg-text">&ldquo;Received invoice #104, will pay early next week. Thanks for your patience!&rdquo;</p>
-          <div class="msg-time">Mock chat &bull; yesterday &bull; nudge scheduled: follow up in 3 days</div>
-        </div>
-      </div>
+      <div class="rail">
+        <section class="card">
+          <div class="cal-head"><strong>Calendar</strong><span>May 2025&nbsp;&nbsp;‹&nbsp;&nbsp;›</span></div>
+          <div class="cal-grid">
+            <span class="dow">S</span><span class="dow">M</span><span class="dow">T</span><span class="dow">W</span><span class="dow">T</span><span class="dow">F</span><span class="dow">S</span>
+            <span class="day"></span><span class="day"></span><span class="day"></span><span class="day">1</span><span class="day">1</span><span class="day">2</span><span class="day">3</span>
+            <span class="day">4</span><span class="day">5</span><span class="day">7</span><span class="day">8</span><span class="day">8</span><span class="day">9</span><span class="day">17</span>
+            <span class="day">11</span><span class="day">13</span><span class="day">14</span><span class="day">16</span><span class="day sel">15</span><span class="day">16</span><span class="day">17</span>
+            <span class="day">18</span><span class="day">19</span><span class="day">21</span><span class="day">22</span><span class="day">22</span><span class="day">22</span><span class="day">24</span>
+            <span class="day">25</span><span class="day">27</span><span class="day">28</span><span class="day">29</span><span class="day">29</span><span class="day">30</span><span class="day">1</span>
+          </div>
+          <div class="hint" style="margin:12px 0 0">Upcoming</div>
+          <div class="up-item"><span class="dot" style="background:#2E9BFF"></span><div><strong>Team Meeting</strong><span>Today, 2:00 PM</span></div></div>
+          <div class="up-item"><span class="dot" style="background:#25D366"></span><div><strong>Client Call</strong><span>Tomorrow, 11:00 AM</span></div></div>
+          <button class="link" type="button" data-mock="View Calendar">View Calendar →</button>
+        </section>
 
-      <div class="msg">
-        <div class="avatar">A</div>
-        <div class="msg-body">
-          <div class="msg-head"><strong>Amara Lee</strong><span class="platform instagram">Instagram</span></div>
-          <p class="msg-text">&ldquo;Loved your latest work! Can we book a call Thursday to discuss the project?&rdquo;</p>
-          <div class="msg-time">Mock DM &bull; yesterday &bull; draft reply ready in Executive tone</div>
-        </div>
+        <section class="card">
+          <div class="cal-head"><strong>Tasks</strong><button class="link" style="margin:0" type="button" data-mock="View all tasks">View all</button></div>
+          <div class="task"><input type="checkbox" id="k1" /><label for="k1">Follow up with leads</label><span class="frac">2/5</span></div>
+          <div class="task"><input type="checkbox" id="k2" /><label for="k2">Prepare proposal</label><span class="frac">0/1</span></div>
+          <div class="task"><input type="checkbox" id="k3" checked /><label for="k3">Review analytics</label><span class="frac ok">3/3 ✓</span></div>
+        </section>
       </div>
-    </section>
+    </div>
 
-    <!-- Tasks preview -->
-    <section class="card" aria-label="Tasks preview">
-      <h2><span class="n">02</span>Tasks preview</h2>
-      <div class="task" id="task1">
-        <input type="checkbox" id="t1" />
-        <label for="t1">Send Sarah the quote (linked to Gmail thread #4821)</label>
-        <span class="due">Due Friday</span>
-      </div>
-      <div class="task" id="task2">
-        <input type="checkbox" id="t2" />
-        <label for="t2">Follow up on invoice #104 with David</label>
-        <span class="due overdue">Overdue 2d</span>
-      </div>
-      <div class="task" id="task3">
-        <input type="checkbox" id="t3" />
-        <label for="t3">Review Amara&rsquo;s draft reply and send</label>
-        <span class="due">Today</span>
-      </div>
-    </section>
-
-    <p class="foot">WIHGO AI prototype — plain HTML/CSS/JS. No server, no packages, no credentials. Mock data only.</p>
-  </main>
+    <div class="strip">
+      <div class="item"><span class="ic">💬</span><div><strong>All your conversations.</strong><span>One intelligent hub.</span></div></div>
+      <div class="item"><span class="ic">✦</span><div><strong>AI powered.</strong><span>Smarter every day.</span></div></div>
+      <div class="item"><span class="ic">🛡</span><div><strong>Secure &amp; Private.</strong><span>Your data, your control.</span></div></div>
+      <div class="item"><span class="ic">📈</span><div><strong>Built for Business.</strong><span>Designed to scale.</span></div></div>
+    </div>
+    <div class="foot">WIHGO AI — CONNECT HUB · CONNECT. COLLABORATE. ACHIEVE. · Static prototype, mock data only.</div>
+  </div>
+</div>
 
 <script>
-  // Vanilla JS interactions (no dependencies, works from file://).
   (function () {
-    // 1. Catch Me Up expand/collapse (working button).
-    var btn = document.getElementById('briefBtn');
-    var detail = document.getElementById('briefDetail');
-    btn.addEventListener('click', function () {
-      var open = detail.classList.toggle('open');
-      btn.textContent = open ? 'Hide full brief' : 'Show full brief';
-    });
-
-    // 2. Task checkboxes strike through + count in header note.
-    var boxes = document.querySelectorAll('.task input[type="checkbox"]');
-    boxes.forEach(function (box) {
-      box.addEventListener('change', function () {
-        box.closest('.task').classList.toggle('done', box.checked);
+    // Tabs filter (All / Unread / Starred) — mock data only.
+    var tabs = document.querySelectorAll('.tab[data-filter]');
+    var msgs = document.querySelectorAll('#msgList .msg');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        var f = tab.getAttribute('data-filter');
+        msgs.forEach(function (m) {
+          var show = f === 'all' ||
+            (f === 'unread' && m.getAttribute('data-unread') === '1') ||
+            (f === 'starred' && m.getAttribute('data-starred') === '1');
+          m.style.display = show ? 'flex' : 'none';
+        });
       });
     });
+
+    // Search filters messages by platform/text.
+    var search = document.getElementById('search');
+    search.addEventListener('input', function () {
+      var q = search.value.toLowerCase();
+      tabs.forEach(function (t) { t.classList.remove('active'); });
+      document.querySelector('.tab[data-filter="all"]').classList.add('active');
+      msgs.forEach(function (m) {
+        m.style.display = m.textContent.toLowerCase().indexOf(q) !== -1 ? 'flex' : 'none';
+      });
+    });
+
+    // Task checkboxes.
+    document.querySelectorAll('.task input').forEach(function (box) {
+      var sync = function () { box.closest('.task').classList.toggle('done', box.checked); };
+      box.addEventListener('change', sync); sync();
+    });
+
+    // Mock actions.
+    function mock(name) { alert(name + ' — mock only in this prototype.'); }
+    document.querySelectorAll('[data-mock]').forEach(function (el) {
+      el.addEventListener('click', function () { mock(el.getAttribute('data-mock')); });
+    });
+    document.getElementById('addBtn').addEventListener('click', function () { mock('Add Connection'); });
+    document.getElementById('chatBtn').addEventListener('click', function () { mock('Start New Chat'); });
+    document.getElementById('bellBtn').addEventListener('click', function () { mock('3 notifications'); });
+    document.getElementById('latestBtn').addEventListener('click', function () { mock('Sort: Latest'); });
   })();
 </script>
 </body>
