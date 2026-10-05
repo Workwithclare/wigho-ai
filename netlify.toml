@@ -5,3 +5,5 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+   [build.environment]
+     SECRETS_SCAN_OMIT_KEYS = "BETTER_AUTH_URL"
