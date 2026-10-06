@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { getUserData } from "@/lib/data";
 import { getTone } from "@/lib/outbox";
 import { askGemini } from "@/lib/ai";
+import type { Message, Task, Commitment } from "@/lib/schema";
 
 // POST /api/assistant { message } — session-gated AI chat over the
 // signed-in user's own business memory. The Gemini key never leaves the server.
@@ -25,14 +26,14 @@ export async function POST(req: Request) {
     const reply = await askGemini(message, {
       userName: session.user.name?.split(" ")[0] ?? "there",
       tone,
-      messages: messages.map((m) => ({ platform: m.platform, sender: m.sender, body: m.body, time: m.time })),
-      commitments: commitments.map((c) => ({
+      messages: messages.map((m: Message) => ({ platform: m.platform, sender: m.sender, body: m.body, time: m.time })),
+      commitments: commitments.map((c: Commitment) => ({
         promiseText: c.promiseText,
         owner: c.owner,
         deadline: c.deadline,
         status: c.status
       })),
-      tasks: tasks.map((t) => ({ title: t.title, done: t.done }))
+      tasks: tasks.map((t: Task) => ({ title: t.title, done: t.done }))
     });
     return NextResponse.json({ reply });
   } catch (err) {

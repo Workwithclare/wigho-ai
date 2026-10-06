@@ -1,4 +1,5 @@
 import { getDb } from "./db";
+import * as schema from "./schema";
 
 // Manual paste/forward intake: any pasted email text becomes a message row.
 // Live Gmail sync lives in lib/gmail-live.ts (OAuth, read-only).

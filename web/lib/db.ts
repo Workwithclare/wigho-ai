@@ -1,12 +1,16 @@
-import { PGlite } from "@electric-sql/pglite";
-import { drizzle, type PgliteDatabase } from "drizzle-orm/pglite";
+import { neon } from "@neondatabase/serverless";
+import { drizzle, type NeonDatabase } from "drizzle-orm/neon-serverless";
 import { eq } from "drizzle-orm";
 import * as schema from "./schema";
 
-// Embedded real PostgreSQL (PGlite), file-backed at web/.pglite/.
-// Same SQL + same Drizzle schema as a Docker Postgres; migratable later.
+// Managed Neon PostgreSQL over HTTP (same Drizzle schema as before).
 // Schema + mock seed are applied idempotently via ensureReady() — call it
 // (and await it) before any query path; getDb() does this automatically.
+const connectionString =
+  process.env.DATABASE_URL ?? "postgresql://placeholder:placeholder@localhost:5432/wihgo";
+
+// Raw client for DDL (proven path: sql.query without params).
+const sql = neon(connectionString);
 
 const DDL = `
 CREATE TABLE IF NOT EXISTS "user" (
@@ -129,38 +133,28 @@ const SEED_CONNECTIONS = ["WhatsApp", "Instagram", "Gmail", "Google Calendar", "
 
 declare global {
   // eslint-disable-next-line no-var
-  var __wihgoClient: PGlite | undefined;
-  // eslint-disable-next-line no-var
   var __wihgoReady: Promise<void> | undefined;
 }
 
-function getClient(): PGlite {
-  if (!globalThis.__wihgoClient) {
-    globalThis.__wihgoClient = new PGlite({ dataDir: "./.pglite" });
-  }
-  return globalThis.__wihgoClient;
-}
-
-// Synchronous drizzle instance (PGlite constructor + drizzle() are sync).
+// Synchronous drizzle instance (manages its own connection from the string).
 // Await ensureReady() once before issuing queries.
-export const db: PgliteDatabase<typeof schema> = drizzle(getClient(), { schema });
+export const db: NeonDatabase<typeof schema> = drizzle(connectionString, { schema });
 
 export function ensureReady(): Promise<void> {
   if (!globalThis.__wihgoReady) {
     globalThis.__wihgoReady = (async () => {
-      const client = getClient();
       for (const stmt of DDL.split(";")) {
         const s = stmt.trim();
-        if (s) await client.query(s);
+        if (s) await sql.query(s);
       }
       // Phase-3 migration: per-user ownership on app tables.
-      await client.query(`ALTER TABLE "messages" ADD COLUMN IF NOT EXISTS "user_id" text`);
-      await client.query(`ALTER TABLE "tasks" ADD COLUMN IF NOT EXISTS "user_id" text`);
-      await client.query(`ALTER TABLE "connections" ADD COLUMN IF NOT EXISTS "user_id" text`);
+      await sql.query(`ALTER TABLE "messages" ADD COLUMN IF NOT EXISTS "user_id" text`);
+      await sql.query(`ALTER TABLE "tasks" ADD COLUMN IF NOT EXISTS "user_id" text`);
+      await sql.query(`ALTER TABLE "connections" ADD COLUMN IF NOT EXISTS "user_id" text`);
       // Drop pre-ownership mock rows (test data only — regenerated per user below).
-      await client.query(`DELETE FROM "messages" WHERE "user_id" IS NULL`);
-      await client.query(`DELETE FROM "tasks" WHERE "user_id" IS NULL`);
-      await client.query(`DELETE FROM "connections" WHERE "user_id" IS NULL`);
+      await sql.query(`DELETE FROM "messages" WHERE "user_id" IS NULL`);
+      await sql.query(`DELETE FROM "tasks" WHERE "user_id" IS NULL`);
+      await sql.query(`DELETE FROM "connections" WHERE "user_id" IS NULL`);
     })();
   }
   return globalThis.__wihgoReady;
@@ -187,7 +181,7 @@ export async function ensureUserSeed(userId: string): Promise<void> {
   );
 }
 
-export async function getDb(): Promise<PgliteDatabase<typeof schema>> {
+export async function getDb(): Promise<NeonDatabase<typeof schema>> {
   await ensureReady();
   return db;
 }
