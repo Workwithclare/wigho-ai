@@ -9,6 +9,8 @@ const googleConfigured =
   Boolean(process.env.GOOGLE_CLIENT_ID) && Boolean(process.env.GOOGLE_CLIENT_SECRET);
 
 export const auth = betterAuth({
+  // Explicitly trusted browser origins (local dev + production).
+  trustedOrigins: ["http://localhost:3000", "https://wihgo.netlify.app"],
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: {
