@@ -176,3 +176,67 @@ export async function flagCommitment(commitmentId: string): Promise<{ ok: boolea
     return { ok: false, error: err instanceof Error ? err.message : "Flag failed." };
   }
 }
+
+// Update a draft's body (edit step of Edit → Copy → Send).
+export async function updateDraftBody(
+  draftId: string,
+  body: string
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const userId = await requireUserId();
+    const db = await getDb();
+    await db
+      .update(schema.drafts)
+      .set({ body: body.slice(0, 20000) })
+      .where(and(eq(schema.drafts.id, draftId), eq(schema.drafts.userId, userId)));
+    revalidatePath("/");
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Save failed." };
+  }
+}
+
+// Send a draft via ZeptoMail (explicit user action only — never automatic).
+// Logs the send; marks the draft sent. Requires ZEPTOMAIL_TOKEN + FROM.
+export async function sendDraft(
+  draftId: string,
+  to: string,
+  subject: string
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const userId = await requireUserId();
+    const db = await getDb();
+    const rows = await db
+      .select()
+      .from(schema.drafts)
+      .where(and(eq(schema.drafts.id, draftId), eq(schema.drafts.userId, userId)));
+    const draft = rows[0];
+    if (!draft) return { ok: false, error: "Draft not found." };
+    const { sendViaZeptoMail } = await import("@/lib/zeptomail");
+    const session = await auth.api.getSession({ headers: await headers() });
+    const result = await sendViaZeptoMail({
+      to,
+      subject: subject || `Follow-up from WIHGO AI`,
+      textBody: draft.body,
+      fromName: session?.user.name ?? "WIHGO AI"
+    });
+    await db.insert(schema.sentLog).values({
+      id: `${userId.slice(0, 8)}-sent-${Date.now()}`,
+      userId,
+      draftId,
+      toAddress: to.trim(),
+      subject: subject.slice(0, 200),
+      provider: "zeptomail",
+      providerId: result.providerId,
+      status: "sent"
+    });
+    await db
+      .update(schema.drafts)
+      .set({ status: "sent" })
+      .where(and(eq(schema.drafts.id, draftId), eq(schema.drafts.userId, userId)));
+    revalidatePath("/");
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Send failed." };
+  }
+}

@@ -3,17 +3,19 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BrandLockup } from "./BrandMark";
+import { CalendarCard } from "./CalendarCard";
 import {
   MessagesCard,
   TasksCard,
   SignOutButton,
   IntakeForm,
   CommitmentsCard,
+  DraftsCard,
   AssistantChat,
   ConnectGmailButton,
   SyncGmailLiveButton
 } from "./DashboardClient";
-import type { Message, Task, Connection, Commitment } from "@/lib/schema";
+import type { Message, Task, Connection, Commitment, Draft } from "@/lib/schema";
 import { TONES } from "@/lib/schema";
 import type { Tone } from "@/lib/schema";
 
@@ -45,6 +47,7 @@ export interface DashboardData {
   tasks: Task[];
   connections: Connection[];
   commitments: Commitment[];
+  drafts: Draft[];
 }
 
 export function DashboardShell({
@@ -59,7 +62,8 @@ export function DashboardShell({
   tone: Tone;
 }) {
   const [view, setView] = useState<ViewKey>("Dashboard");
-  const { messages, tasks, connections, commitments } = data;
+  const [genNote, setGenNote] = useState("");
+  const { messages, tasks, connections, commitments, drafts } = data;
   const unread = messages.filter((m) => m.unread).length;
   const tasksDue = tasks.filter((t) => !t.done).length;
 
@@ -141,6 +145,11 @@ export function DashboardShell({
               </section>
             </div>
             <CommitmentsCard commitments={commitments} messages={messages} />
+            <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+              <GenerateOutputsButton onDone={setGenNote} />
+              {genNote && <span style={{ color: "#14b8a6", fontSize: 12.5 }}>{genNote}</span>}
+            </div>
+            <DraftsCard drafts={drafts} />
             <IntakeBlock tasks={tasks} />
           </>
         )}
@@ -178,15 +187,7 @@ export function DashboardShell({
           </section>
         )}
 
-        {view === "Calendar" && (
-          <section style={card}>
-            <h3 style={h3}>Calendar — May 2025</h3>
-            <p style={hint}>
-              Upcoming: Team Meeting (Today, 2:00 PM) · Client Call (Tomorrow, 11:00 AM). Live sync
-              lands with Google Calendar.
-            </p>
-          </section>
-        )}
+        {view === "Calendar" && <CalendarCard />}
 
         {view === "Analytics" && (
           <section style={card}>
@@ -280,6 +281,28 @@ function PlatformsCard({ connections }: { connections: Connection[] }) {
         ))}
       </div>
     </section>
+  );
+}
+
+export function GenerateOutputsButton({ onDone }: { onDone: (msg: string) => void }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  return (
+    <button
+      type="button"
+      disabled={busy}
+      onClick={async () => {
+        setBusy(true);
+        const { generateOutputs } = await import("@/app/actions");
+        const res = await generateOutputs();
+        onDone(`✓ Generated ${res.tasks} tasks + ${res.drafts} drafts in ${res.tone} tone.`);
+        setBusy(false);
+        router.refresh();
+      }}
+      style={solidBtnLike}
+    >
+      {busy ? "Generating…" : "Generate tasks + drafts from commitments"}
+    </button>
   );
 }
 
@@ -398,6 +421,18 @@ const card: React.CSSProperties = {
   border: "1px solid #073f42",
   borderRadius: 14,
   padding: 20
+};
+const solidBtnLike: React.CSSProperties = {
+  background: "#0b5c5b",
+  border: "none",
+  color: "#fff",
+  fontFamily: "inherit",
+  fontSize: 13,
+  fontWeight: 600,
+  borderRadius: 10,
+  padding: "10px 18px",
+  cursor: "pointer",
+  boxShadow: "0 0 14px rgba(20,184,166,0.45)"
 };
 const h3: React.CSSProperties = { color: "#fff", fontSize: 15.5, fontWeight: 600, margin: "0 0 4px" };
 const hint: React.CSSProperties = { color: "#c7cdd1", fontSize: 12.5, marginBottom: 14 };

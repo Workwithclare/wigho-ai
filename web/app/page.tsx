@@ -9,7 +9,7 @@ export default async function DashboardPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/login");
 
-  const [{ messages, tasks, connections, commitments }, tone] = await Promise.all([
+  const [{ messages, tasks, connections, commitments, drafts }, tone] = await Promise.all([
     getUserData(session.user.id),
     getTone(session.user.id)
   ]);
@@ -20,7 +20,7 @@ export default async function DashboardPage() {
     <DashboardShell
       userName={userName}
       userEmail={session.user.email ?? ""}
-      data={{ messages, tasks, connections, commitments }}
+      data={{ messages, tasks, connections, commitments, drafts }}
       tone={tone}
     />
   );

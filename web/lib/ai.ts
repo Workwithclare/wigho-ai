@@ -17,16 +17,16 @@ export interface AssistantContext {
 
 function buildPrompt(userMessage: string, ctx: AssistantContext): string {
   const msgLines = ctx.messages
-    .slice(0, 12)
+    .slice(0, 6)
     .map((m) => `- [${m.platform}] ${m.sender} (${m.time}): ${m.body}`)
     .join("\n");
   const comLines = ctx.commitments
     .filter((c) => c.status === "open")
-    .slice(0, 12)
+    .slice(0, 6)
     .map((c) => `- ${c.promiseText}${c.owner ? ` (owner: ${c.owner})` : ""}${c.deadline ? ` (deadline: ${c.deadline})` : ""}`)
     .join("\n");
   const taskLines = ctx.tasks
-    .slice(0, 12)
+    .slice(0, 6)
     .map((t) => `- [${t.done ? "done" : "open"}] ${t.title}`)
     .join("\n");
   return [
@@ -54,7 +54,7 @@ export async function askGemini(userMessage: string, ctx: AssistantContext): Pro
   }
   const body = JSON.stringify({
     contents: [{ parts: [{ text: buildPrompt(userMessage, ctx) }] }],
-    generationConfig: { maxOutputTokens: 512, temperature: 0.4 }
+      generationConfig: { maxOutputTokens: 300, temperature: 0.4 }
   });
   // Retry on rate-limit/overload (429/503) with backoff; fail over to the
   // next model when one is retired (404) or stays overloaded. Other errors

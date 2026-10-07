@@ -114,6 +114,17 @@ CREATE TABLE IF NOT EXISTS "preferences" (
   "tone" text NOT NULL DEFAULT 'Executive',
   "updated_at" timestamp NOT NULL DEFAULT now()
 );
+CREATE TABLE IF NOT EXISTS "sent_log" (
+  "id" text PRIMARY KEY,
+  "user_id" text,
+  "draft_id" text NOT NULL DEFAULT '',
+  "to_address" text NOT NULL,
+  "subject" text NOT NULL DEFAULT '',
+  "provider" text NOT NULL DEFAULT 'zeptomail',
+  "provider_id" text NOT NULL DEFAULT '',
+  "status" text NOT NULL DEFAULT 'sent',
+  "created_at" timestamp NOT NULL DEFAULT now()
+);
 `;
 
 const SEED_MESSAGES = [

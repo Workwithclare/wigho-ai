@@ -126,6 +126,21 @@ export const preferences = pgTable("preferences", {
   updatedAt: timestamp("updated_at").notNull().defaultNow()
 });
 
+// ---- Outbound email log (ZeptoMail sends) ----
+export const sentLog = pgTable("sent_log", {
+  id: text("id").primaryKey(),
+  userId: text("user_id"),
+  draftId: text("draft_id").notNull().default(""),
+  toAddress: text("to_address").notNull(),
+  subject: text("subject").notNull().default(""),
+  provider: text("provider").notNull().default("zeptomail"),
+  providerId: text("provider_id").notNull().default(""),
+  status: text("status").notNull().default("sent"),
+  createdAt: timestamp("created_at").notNull().defaultNow()
+});
+
+export type SentLog = typeof sentLog.$inferSelect;
+
 export type Commitment = typeof commitments.$inferSelect;
 export type Draft = typeof drafts.$inferSelect;
 

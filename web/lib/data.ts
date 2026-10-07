@@ -8,14 +8,15 @@ import * as schema from "./schema";
 export async function getUserData(userId: string) {
   await ensureUserSeed(userId);
   const db = await getDb();
-  const [messages, tasks, connections, commitments] = await Promise.all([
+  const [messages, tasks, connections, commitments, drafts] = await Promise.all([
     db.select().from(schema.messages).where(eq(schema.messages.userId, userId)),
     db.select().from(schema.tasks).where(eq(schema.tasks.userId, userId)),
     db.select().from(schema.connections).where(eq(schema.connections.userId, userId)),
     db
       .select()
       .from(schema.commitments)
-      .where(eq(schema.commitments.userId, userId))
+      .where(eq(schema.commitments.userId, userId)),
+    db.select().from(schema.drafts).where(eq(schema.drafts.userId, userId))
   ]);
-  return { messages, tasks, connections, commitments };
+  return { messages, tasks, connections, commitments, drafts };
 }

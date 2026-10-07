@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Tabs } from "@radix-ui/themes";
 import { authClient } from "@/lib/auth-client";
-import type { Message, Task, Commitment } from "@/lib/schema";
+import type { Message, Task, Commitment, Draft } from "@/lib/schema";
 
 const PLATFORM_STYLE: Record<string, { bg: string; glyph: string; color?: string }> = {
   WhatsApp: { bg: "#25D366", glyph: "✆" },
@@ -100,6 +100,93 @@ export function MessagesCard({ messages }: { messages: Message[] }) {
           );
         })}
       </div>
+    </section>
+  );
+}
+
+export function DraftsCard({ drafts }: { drafts: Draft[] }) {
+  const router = useRouter();
+  const [bodies, setBodies] = useState<Record<string, string>>({});
+  const [toMap, setToMap] = useState<Record<string, string>>({});
+  const [subjMap, setSubjMap] = useState<Record<string, string>>({});
+  const [note, setNote] = useState<Record<string, string>>({});
+  const [busy, setBusy] = useState<Record<string, boolean>>({});
+
+  async function save(id: string, body: string) {
+    const { updateDraftBody } = await import("@/app/actions");
+    const res = await updateDraftBody(id, body);
+    setNote((n) => ({ ...n, [id]: res.ok ? "✓ Saved." : `Error: ${res.error}` }));
+    if (res.ok) router.refresh();
+  }
+
+  async function copy(id: string, body: string) {
+    try {
+      await navigator.clipboard.writeText(body);
+    } catch {
+      /* clipboard unavailable — user copies manually */
+    }
+    const { markDraftCopied } = await import("@/app/actions");
+    await markDraftCopied(id);
+    setNote((n) => ({ ...n, [id]: "✓ Copied — paste and send it yourself." }));
+    router.refresh();
+  }
+
+  async function send(id: string) {
+    setBusy((b) => ({ ...b, [id]: true }));
+    const { sendDraft } = await import("@/app/actions");
+    const res = await sendDraft(id, toMap[id] ?? "", subjMap[id] ?? "");
+    setNote((n) => ({ ...n, [id]: res.ok ? "✓ Sent via ZeptoMail and logged." : `Error: ${res.error}` }));
+    setBusy((b) => ({ ...b, [id]: false }));
+    if (res.ok) router.refresh();
+  }
+
+  return (
+    <section style={card}>
+      <h3 style={h3}>Drafts — edit, copy, or send</h3>
+      {drafts.length === 0 && (
+        <p style={muted}>No drafts yet. Generate them from your commitments first.</p>
+      )}
+      {drafts.map((d) => (
+        <div key={d.id} style={commitRow}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p style={{ ...muted, margin: "0 0 6px" }}>
+              Tone: {d.tone} · Status: {d.status}
+            </p>
+            <textarea
+              value={bodies[d.id] ?? d.body}
+              onChange={(e) => setBodies((b) => ({ ...b, [d.id]: e.target.value }))}
+              rows={4}
+              style={{ ...search, resize: "vertical" }}
+            />
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
+              <input
+                value={toMap[d.id] ?? ""}
+                onChange={(e) => setToMap((m) => ({ ...m, [d.id]: e.target.value }))}
+                placeholder="Send to (email)"
+                style={{ ...search, marginBottom: 0, flex: 1, minWidth: 180 }}
+              />
+              <input
+                value={subjMap[d.id] ?? ""}
+                onChange={(e) => setSubjMap((m) => ({ ...m, [d.id]: e.target.value }))}
+                placeholder="Subject"
+                style={{ ...search, marginBottom: 0, flex: 1, minWidth: 180 }}
+              />
+            </div>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <button type="button" onClick={() => save(d.id, bodies[d.id] ?? d.body)} style={ghostBtn}>
+                Save edits
+              </button>
+              <button type="button" onClick={() => copy(d.id, bodies[d.id] ?? d.body)} style={ghostBtn}>
+                Copy
+              </button>
+              <button type="button" onClick={() => send(d.id)} disabled={!!busy[d.id]} style={solidBtn}>
+                {busy[d.id] ? "Sending…" : "Send via ZeptoMail"}
+              </button>
+            </div>
+            {note[d.id] && <p style={{ color: "#14b8a6", fontSize: 12.5 }}>{note[d.id]}</p>}
+          </div>
+        </div>
+      ))}
     </section>
   );
 }
