@@ -19,3 +19,37 @@ body {
   color: var(--offwhite);
   font-family: 'Poppins', -apple-system, "Segoe UI", Roboto, sans-serif;
 }
+
+/* ---- Motion system (CSS-only, frozen brand) ---- */
+@keyframes wihgo-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes wihgo-orb-float {
+  0%, 100% { transform: translateY(0); box-shadow: 0 0 22px rgba(20, 184, 166, 0.5); }
+  50% { transform: translateY(-6px); box-shadow: 0 0 34px rgba(20, 184, 166, 0.75); }
+}
+@keyframes wihgo-glow-pulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(20, 184, 166, 0.45); }
+  50% { box-shadow: 0 0 26px rgba(20, 184, 166, 0.8); }
+}
+
+/* View container: re-animates on every nav switch (key={view}). */
+.anim-view { animation: wihgo-fade-up 0.35s ease both; }
+
+/* Cards: stagger with style={{ animationDelay: "60ms" }} etc. */
+.anim-card { animation: wihgo-fade-up 0.4s ease both; }
+
+/* AI orb: gentle float + glow. */
+.orb-pulse { animation: wihgo-orb-float 3.2s ease-in-out infinite; }
+
+/* Primary buttons: glowing pulse on hover. */
+.btn-glow { transition: box-shadow 0.2s ease, transform 0.2s ease; }
+.btn-glow:hover {
+  animation: wihgo-glow-pulse 1.6s ease-in-out infinite;
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-view, .anim-card, .orb-pulse, .btn-glow:hover { animation: none; }
+}

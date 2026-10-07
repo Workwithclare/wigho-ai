@@ -113,7 +113,7 @@ export function DashboardShell({
         </div>
       </aside>
 
-      <div style={main}>
+      <div style={main} key={view} className="anim-view">
         <div style={header}>
           <div>
             <h1 style={{ color: "#fff", fontSize: 26, fontWeight: 600, margin: 0 }}>
@@ -246,17 +246,17 @@ function StatsRow({
 }) {
   return (
     <div style={stats}>
-      <Stat glyph="💬" num={messages} label="Total Messages" delta={`${unread} unread`} />
-      <Stat glyph="👥" num={connections} label="Connections" delta="all linked" />
-      <Stat glyph="📅" num={tasksDue} label="Tasks Due" delta={`${tasks} tracked`} />
-      <Stat glyph="📈" num={8} label="Automations" delta="mock" />
+      <Stat glyph="💬" num={messages} label="Total Messages" delta={`${unread} unread`} delay={0} />
+      <Stat glyph="👥" num={connections} label="Connections" delta="all linked" delay={70} />
+      <Stat glyph="📅" num={tasksDue} label="Tasks Due" delta={`${tasks} tracked`} delay={140} />
+      <Stat glyph="📈" num={8} label="Automations" delta="mock" delay={210} />
     </div>
   );
 }
 
-function Stat({ glyph, num, label, delta }: { glyph: string; num: number; label: string; delta: string }) {
+function Stat({ glyph, num, label, delta, delay }: { glyph: string; num: number; label: string; delta: string; delay: number }) {
   return (
-    <div style={stat}>
+    <div style={{ ...stat, animationDelay: `${delay}ms` }} className="anim-card">
       <div style={tile}>{glyph}</div>
       <div>
         <div style={{ color: "#fff", fontSize: 26, fontWeight: 600, lineHeight: 1.1 }}>{num}</div>
@@ -300,6 +300,7 @@ export function GenerateOutputsButton({ onDone }: { onDone: (msg: string) => voi
         router.refresh();
       }}
       style={solidBtnLike}
+      className="btn-glow"
     >
       {busy ? "Generating…" : "Generate tasks + drafts from commitments"}
     </button>

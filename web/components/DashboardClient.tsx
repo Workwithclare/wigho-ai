@@ -272,7 +272,7 @@ export function AssistantChat({ userName }: { userName: string }) {
   return (
     <div>
       <div style={{ textAlign: "center", padding: "6px 0 12px" }}>
-        <div style={aiOrb}>🤖</div>
+        <div style={aiOrb} className="orb-pulse">🤖</div>
         <strong style={{ color: "#fff", fontSize: 15 }}>Hello {userName}! 👋</strong>
         <p style={{ color: "#c7cdd1", fontSize: 13, margin: "2px 0 0" }}>Ask about your messages, commitments, or tasks.</p>
       </div>
@@ -305,7 +305,7 @@ export function AssistantChat({ userName }: { userName: string }) {
           placeholder="Ask WIHGO AI…"
           style={{ ...search, marginBottom: 0, flex: 1 }}
         />
-        <button type="submit" disabled={busy} style={{ ...solidBtn, opacity: busy ? 0.6 : 1 }}>
+        <button type="submit" disabled={busy} style={{ ...solidBtn, opacity: busy ? 0.6 : 1 }} className="btn-glow">
           Send
         </button>
       </form>
