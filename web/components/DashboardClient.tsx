@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Tabs } from "@radix-ui/themes";
 import { authClient } from "@/lib/auth-client";
@@ -244,24 +244,80 @@ export function AssistantChat({ userName }: { userName: string }) {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [voiceOn, setVoiceOn] = useState(true);
+  const [listening, setListening] = useState(false);
+  const recogRef = useRef<any>(null);
 
-  async function send(e?: React.FormEvent) {
-    e?.preventDefault();
-    const text = input.trim();
-    if (!text || busy) return;
+  function speak(text: string) {
+    try {
+      if (!voiceOn || typeof window === "undefined" || !("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text.slice(0, 400));
+      utter.rate = 1;
+      window.speechSynthesis.speak(utter);
+    } catch {
+      /* speech unsupported — text chat still works */
+    }
+  }
+
+  function toggleMic() {
+    try {
+      const SR =
+        (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (!SR) {
+        setError("Voice input needs Chrome or Edge on this device — typing still works.");
+        return;
+      }
+      if (listening && recogRef.current) {
+        recogRef.current.stop();
+        return;
+      }
+      const recog = new SR();
+      recogRef.current = recog;
+      recog.lang = "en-US";
+      recog.interimResults = false;
+      recog.onresult = (e: any) => {
+        const transcript = e.results?.[0]?.[0]?.transcript ?? "";
+        if (transcript.trim()) {
+          setInput(transcript);
+          // auto-send the spoken message
+          setTimeout(() => sendText(transcript), 100);
+        }
+      };
+      recog.onend = () => {
+        setListening(false);
+        recogRef.current = null;
+      };
+      recog.onerror = () => {
+        setListening(false);
+        recogRef.current = null;
+      };
+      recog.start();
+      setListening(true);
+      setError("");
+    } catch {
+      setError("Could not start the microphone.");
+    }
+  }
+
+  async function sendText(text: string) {
+    const clean = text.trim();
+    if (!clean || busy) return;
     setInput("");
     setError("");
     setBusy(true);
-    setHistory((h) => [...h, { role: "you", text }]);
+    setHistory((h) => [...h, { role: "you", text: clean }]);
     try {
       const res = await fetch("/api/assistant", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text })
+        body: JSON.stringify({ message: clean })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error ?? "Assistant failed.");
-      setHistory((h) => [...h, { role: "ai", text: String(data.reply) }]);
+      const reply = String(data.reply);
+      setHistory((h) => [...h, { role: "ai", text: reply }]);
+      speak(reply);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Assistant failed.");
     } finally {
@@ -298,13 +354,43 @@ export function AssistantChat({ userName }: { userName: string }) {
         {busy && <div style={{ color: "#7a8a8d", fontSize: 12.5 }}>Thinking…</div>}
       </div>
       {error && <p style={{ color: "#ff9d9d", fontSize: 12.5 }}>{error}</p>}
-      <form onSubmit={send} style={{ display: "flex", gap: 8 }}>
+      <form onSubmit={(e) => { e.preventDefault(); sendText(input); }} style={{ display: "flex", gap: 8 }}>
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask WIHGO AI…"
+          placeholder="Ask WIHGO AI… or tap 🎤 to speak"
           style={{ ...search, marginBottom: 0, flex: 1 }}
         />
+        <button
+          type="button"
+          onClick={toggleMic}
+          title={listening ? "Stop listening" : "Speak instead of typing"}
+          style={{
+            ...ghostBtn,
+            borderColor: listening ? "#ff9d9d" : "#0b5c5b",
+            color: listening ? "#ff9d9d" : "#f4f7f7"
+          }}
+        >
+          {listening ? "⏺…" : "🎤"}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const next = !voiceOn;
+            setVoiceOn(next);
+            if (!next) {
+              try {
+                window.speechSynthesis?.cancel();
+              } catch {
+                /* ignore */
+              }
+            }
+          }}
+          title={voiceOn ? "Mute spoken replies" : "Hear spoken replies"}
+          style={ghostBtn}
+        >
+          {voiceOn ? "🔊" : "🔇"}
+        </button>
         <button type="submit" disabled={busy} style={{ ...solidBtn, opacity: busy ? 0.6 : 1 }} className="btn-glow">
           Send
         </button>

@@ -125,6 +125,16 @@ CREATE TABLE IF NOT EXISTS "sent_log" (
   "status" text NOT NULL DEFAULT 'sent',
   "created_at" timestamp NOT NULL DEFAULT now()
 );
+CREATE TABLE IF NOT EXISTS "suggestions" (
+  "id" text PRIMARY KEY,
+  "user_id" text,
+  "commitment_id" text NOT NULL,
+  "kind" text NOT NULL,
+  "title" text NOT NULL,
+  "detail" text NOT NULL DEFAULT '',
+  "status" text NOT NULL DEFAULT 'pending',
+  "created_at" timestamp NOT NULL DEFAULT now()
+);
 `;
 
 const SEED_MESSAGES = [

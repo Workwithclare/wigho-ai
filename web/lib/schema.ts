@@ -141,6 +141,20 @@ export const sentLog = pgTable("sent_log", {
 
 export type SentLog = typeof sentLog.$inferSelect;
 
+// ---- Business Hub: AI suggestions with review → confirm → action ----
+export const suggestions = pgTable("suggestions", {
+  id: text("id").primaryKey(),
+  userId: text("user_id"),
+  commitmentId: text("commitment_id").notNull(),
+  kind: text("kind").notNull(),
+  title: text("title").notNull(),
+  detail: text("detail").notNull().default(""),
+  status: text("status").notNull().default("pending"),
+  createdAt: timestamp("created_at").notNull().defaultNow()
+});
+
+export type Suggestion = typeof suggestions.$inferSelect;
+
 export type Commitment = typeof commitments.$inferSelect;
 export type Draft = typeof drafts.$inferSelect;
 
