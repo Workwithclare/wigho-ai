@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WIHGO AI — Design System (Frozen Brand Reference)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --teal-dark: #073F42;
+    --teal: #0B5C5B;
+    --silver: #C7CDD1;
+    --black: #081012;
+    --white: #FFFFFF;
+    --offwhite: #F4F7F7;
+    --teal-glow: #14B8A6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--black);
+    color: var(--offwhite);
+    font-family: 'Poppins', -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    padding: 48px 24px;
+  }
+  .page {
+    max-width: 880px; margin: 0 auto;
+    background: #0C1A1C;
+    border: 1px solid var(--teal-dark);
+    border-radius: 16px;
+    padding: 56px 52px;
+  }
+  .eyebrow {
+    color: var(--teal-glow);
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  h2.section {
+    color: var(--silver);
+    font-size: 15px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    border-bottom: 1px solid var(--teal-dark);
+    padding-bottom: 10px;
+    margin: 44px 0 20px 0;
+  }
+
+  /* 1. Logo lockup */
+  .lockup { text-align: center; padding: 12px 0 8px; }
+  .lockup svg { width: 120px; height: auto; }
+  .lockup .name { color: var(--white); font-size: 44px; font-weight: 700; letter-spacing: 0.04em; margin-top: 10px; }
+  .lockup .name span { color: var(--teal-glow); }
+  .lockup .hub { color: var(--teal-glow); font-size: 17px; font-weight: 500; letter-spacing: 0.55em; text-indent: 0.55em; margin-top: 4px; }
+  .lockup .tagline { color: var(--offwhite); font-size: 13px; font-weight: 400; letter-spacing: 0.3em; text-indent: 0.3em; margin-top: 10px; }
+
+  /* 2. Palette */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .swatch { border: 1px solid var(--teal-dark); border-radius: 10px; overflow: hidden; background: #0E2224; }
+  .swatch .chip { height: 64px; }
+  .swatch .label { padding: 10px 12px; }
+  .swatch .label strong { display: block; color: var(--white); font-size: 14px; font-weight: 600; }
+  .swatch .label span { color: var(--silver); font-size: 13px; }
+
+  /* 3. Typography */
+  .type-sample { background: #0E2224; border: 1px solid var(--teal-dark); border-radius: 10px; padding: 20px 22px; margin-bottom: 12px; }
+  .type-sample .tag { color: var(--teal-glow); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 8px; }
+  .type-aa { color: var(--white); font-size: 64px; font-weight: 600; line-height: 1; }
+  .type-aa span { font-weight: 400; }
+  .type-weights { color: var(--offwhite); margin-top: 10px; }
+  .type-weights .sb { font-weight: 600; } .type-weights .md { font-weight: 500; } .type-weights .rg { font-weight: 400; }
+  .type-tagline { margin-top: 12px; }
+  .type-tagline .l1 { color: var(--teal-glow); font-weight: 600; font-size: 20px; }
+  .type-tagline .l2 { color: var(--white); font-weight: 600; font-size: 20px; }
+
+  /* 4. Button */
+  .btn {
+    display: inline-block;
+    background: var(--teal);
+    color: var(--white);
+    font-family: inherit; font-size: 16px; font-weight: 600;
+    border: none; border-radius: 10px;
+    padding: 14px 30px; cursor: pointer;
+    box-shadow: 0 0 18px rgba(20, 184, 166, 0.55), 0 0 42px rgba(20, 184, 166, 0.25);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .btn:hover { box-shadow: 0 0 26px rgba(20, 184, 166, 0.8), 0 0 60px rgba(20, 184, 166, 0.35); transform: translateY(-1px); }
+  .btn-note { color: var(--silver); font-size: 14px; margin-top: 10px; }
+
+  /* 5. Input */
+  .field label { display: block; color: var(--silver); font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
+  .field input {
+    width: 100%;
+    background: #0E2224;
+    border: 1px solid var(--teal);
+    border-radius: 10px;
+    color: var(--white);
+    font-family: inherit; font-size: 16px;
+    padding: 13px 16px; outline: none;
+  }
+  .field input::placeholder { color: #7A8A8D; }
+  .field input:focus { border-color: var(--teal-glow); box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.25); }
+  .meta { margin-top: 36px; color: var(--silver); font-size: 14px; }
+</style>
+</head>
+<body>
+  <main class="page">
+    <div class="eyebrow">WIHGO AI &bull; Frozen Brand Reference &mdash; Do Not Redesign</div>
+
+    <h2 class="section" style="margin-top:0">1. Logo lockup</h2>
+    <div class="lockup">
+      <svg viewBox="0 0 120 70" aria-label="WIHGO AI logo mark">
+        <defs>
+          <linearGradient id="wteal" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#14B8A6"/><stop offset="1" stop-color="#073F42"/>
+          </linearGradient>
+          <linearGradient id="wsilver" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C7CDD1"/>
+          </linearGradient>
+        </defs>
+        <path d="M8 10 L28 60 L45 25 L62 60 L82 10 L66 10 L54 38 L45 18 L36 38 L24 10 Z" fill="url(#wteal)"/>
+        <path d="M82 10 L98 42 L112 10 L96 10 L90 24 L84 10 Z" fill="url(#wsilver)"/>
+        <circle cx="112" cy="8" r="6" fill="url(#wsilver)"/>
+      </svg>
+      <div class="name">WIHGO <span>AI</span></div>
+      <div class="hub">CONNECT HUB</div>
+      <div class="tagline">CONNECT. COLLABORATE. ACHIEVE.</div>
+    </div>
+
+    <h2 class="section">2. Brand palette</h2>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:#073F42"></div><div class="label"><strong>Deep Teal</strong><span>#073F42</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#0B5C5B"></div><div class="label"><strong>Teal</strong><span>#0B5C5B</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#C7CDD1"></div><div class="label"><strong>Silver</strong><span>#C7CDD1</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#081012"></div><div class="label"><strong>Black</strong><span>#081012</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#FFFFFF"></div><div class="label"><strong>White</strong><span>#FFFFFF</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#F4F7F7"></div><div class="label"><strong>Off-White</strong><span>#F4F7F7</span></div></div>
+    </div>
+
+    <h2 class="section">3. Typography — Poppins</h2>
+    <div class="type-sample">
+      <div class="tag">Aa — Poppins SemiBold / Medium / Regular</div>
+      <div class="type-aa">Aa <span>Aa</span></div>
+      <div class="type-weights">
+        <div class="sb">Poppins SemiBold — Headings, brand lockup</div>
+        <div class="md">Poppins Medium — Sub-heads, buttons, labels</div>
+        <div class="rg">Poppins Regular — Body copy, supporting text</div>
+      </div>
+      <div class="type-tagline">
+        <div class="l1">CONNECT.</div>
+        <div class="l2">COLLABORATE.</div>
+        <div class="l1">ACHIEVE.</div>
+      </div>
+    </div>
+
+    <h2 class="section">4. Button</h2>
+    <button class="btn" id="demoBtn" type="button">+ Add Connection</button>
+    <div class="btn-note" id="btnNote">Teal button with glow. Click to test (mock).</div>
+
+    <h2 class="section">5. Text input</h2>
+    <div class="field">
+      <label for="demoInput">Search messages, contacts… (mock)</label>
+      <input id="demoInput" type="text" placeholder="Search messages, contacts…" autocomplete="off" />
+    </div>
+
+    <div class="meta">Frozen reference — static file, no build step. Mock only.</div>
+  </main>
+
+<script>
+  (function () {
+    var btn = document.getElementById('demoBtn');
+    var note = document.getElementById('btnNote');
+    btn.addEventListener('click', function () {
+      note.textContent = '✓ Button works (mock — no action wired).';
+    });
+  })();
+</script>
+</body>
+</html>

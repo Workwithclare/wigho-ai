@@ -1,0 +1,10 @@
+node_modules/
+.next/
+out/
+.pglite/
+*.tsbuildinfo
+# one-off local probe scripts (never commit; OneDrive may restore deletes)
+scripts/probe-*.mjs
+.env
+.env.local
+.env*.local

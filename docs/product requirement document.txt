@@ -1,0 +1,85 @@
+Wigho AI — Product Requirements Document
+Tagline: Never lose the conversation or commitment behind your business.
+
+1. Overview
+Wigho AI is an AI-powered business communication and productivity platform built for small business owners, founders, and freelancers. It unifies a user's business conversations (Gmail, WhatsApp, Instagram DMs) into a private, AI-powered memory layer, then proactively acts on that memory — surfacing follow-ups, generating tasks, managing calendar commitments, and drafting replies — so nothing a user has promised a client or partner ever falls through the cracks.
+2. Problem Statement
+Small business owners and freelancers run every function of their business themselves — sales, support, admin — across scattered channels (email, WhatsApp, Instagram DMs). The biggest cost isn't a lack of tools; it's forgetting what was promised to whom. Existing tools (CRMs, task apps, inboxes) store information but don't actively remember or act on commitments on the user's behalf.
+3. Target User
+Small business owners
+Solo founders and freelancers
+Anyone running their business primarily through direct conversations rather than a dedicated sales/support team
+4. Product Pillars
+Personal Memory — private, user-level memory of the individual's own history and preferences.
+Business Memory — memory built from connected business channels: Gmail, WhatsApp, Instagram.
+Authorized AI Action — the AI only acts on data and channels the user has explicitly connected and authorized.
+Private by Default — single-user memory model at launch; no forced team/multiplayer complexity.
+5. Core Features
+5.1 Unified Business Memory
+Ingests and understands conversations from Gmail, WhatsApp, and Instagram DMs.
+Extracts commitments, deadlines, and open threads automatically from natural conversation.
+Two distinct memory layers: personal and business, with the AI acting only within what the user is authorized to access.
+5.2 Proactive Actions (triggered by deadlines/commitments only)
+Follow-up nudges — reminds the user of commitments as deadlines approach or pass (e.g., "You told Sarah Friday — it's Thursday.").
+Smart search — pull-based search across all connected conversations and memory.
+Auto-draft replies — context-aware draft responses based on conversation history.
+Auto-generated tasks — tasks created automatically from conversations, always linked back to the conversation and client that created them.
+Proactivity is strictly deadline/commitment-triggered — not real-time or high-frequency — to avoid notification fatigue and stay tightly scoped to the core promise.
+5.3 Productivity Modules (bundled, conversation-linked)
+Tasks/to-dos — born from and linked back to the originating conversation.
+Calendar & scheduling — commitments and deadlines surface directly on the calendar.
+Invoicing & payments — tied to client conversations and commitments.
+Client/contact CRM records — a living record built from actual conversation history, not manual data entry.
+5.4 Memory & Access Model
+Single-user, private by default at launch.
+No team-sharing or multiplayer permissions complexity in v1 — reserved for a future phase once the single-user experience is validated.
+6. AI Voice & Tone
+Attribute
+Description
+Primary tone
+Sharp and proactive, yet warm and professional
+Content style
+Concise and clear
+Confidence
+Confident, never arrogant
+Behavior
+Anticipates needs rather than waiting for commands
+Humor
+Minimal, understated
+Focus
+Business-focused, not overly personal/human
+
+Example nudge: "You told Sarah you'd send the quote by Friday — it's Thursday. Send it now?"
+7. Onboarding Flow
+Welcome (0:20) — "Welcome to Wigho AI: your business conversations, commitments, and follow-ups, understood and organized."
+Guided demo (1:00) — a 60-second guided demo showing how Wigho understands and organizes commitments.
+Connect your business — user connects their first channel (Gmail) and sees real, immediate value (e.g., "Found 3 open commitments you haven't followed up on.").
+Add another channel — WhatsApp and Instagram added only after initial value has been demonstrated.
+Business brief & daily handoff — onboarding closes into the daily experience: "Good morning — here's what needs your attention."
+8. Platform
+Mobile app first — primary experience, since WhatsApp/Instagram are mobile-native and deadline nudges need to reach users wherever they are.
+Web app as companion — for deeper review, setup, and configuration.
+9. Pricing Model
+Multiple tiers, structured around channel count and memory/action depth:
+Tier
+Suggested Scope
+Basic
+Single channel (Gmail), core memory + follow-up nudges
+Pro
+All channels (Gmail, WhatsApp, Instagram) + full action suite (tasks, calendar, drafts, CRM)
+Enterprise
+Pro features + future team-sharing/multiplayer memory
+
+10. Success Metrics (suggested starting points)
+% of new users who connect at least one channel within first session
+% of users who see a surfaced commitment/follow-up within first 5 minutes
+Weekly active usage of proactive nudges (opened/acted on vs. ignored)
+Retention at 30/60/90 days
+Upgrade rate from Basic → Pro
+11. Out of Scope (v1)
+Team/shared memory and multi-user permissions
+Real-time/high-frequency notifications
+Additional channels beyond Gmail, WhatsApp, Instagram
+Desktop-first experience
+
+This PRD reflects product decisions made collaboratively; feature scope, pricing, and onboarding details should be revisited as user research and early usage data come in.
