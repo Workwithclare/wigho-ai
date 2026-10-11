@@ -1,43 +1,106 @@
-const dbConfigured = Boolean(process.env.DATABASE_URL);
-const googleConfigured =
-  Boolean(process.env.GOOGLE_CLIENT_ID) && Boolean(process.env.GOOGLE_CLIENT_SECRET);
+"use client";
 
-export default function Home() {
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { OpeningMotionSequence } from '../components/wihgo/welcome/OpeningMotionSequence';
+import { OpeningExperience } from '../components/wihgo/welcome/OpeningExperience';
+import { AuthModal } from '../components/wihgo/auth/AuthModal';
+import { BackgroundNetwork } from '../components/common/BackgroundNetwork';
+import { Logo } from '../components/common/Logo';
+import { INITIAL_USER_PROFILE } from '../lib/wihgo/mockData';
+
+export default function RootFlow() {
+  const router = useRouter();
+  const [stage, setStage] = useState<'splash' | 'opening' | 'gate'>('splash');
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup' | 'forgot' | 'verify' | 'update_password'>('login');
+
+  useEffect(() => {
+    try {
+      if (localStorage.getItem('wihgo_demo_auth') === 'true') router.replace('/dashboard');
+    } catch {}
+  }, [router]);
+
+  const enterDemo = () => {
+    try {
+      localStorage.setItem('wihgo_demo_auth', 'true');
+      localStorage.setItem('wihgo_onboarding_done', 'true');
+    } catch {}
+    router.push('/dashboard');
+  };
+
+  if (stage === 'splash') {
+    return <OpeningMotionSequence onComplete={() => setStage('opening')} />;
+  }
+
+  if (stage === 'opening') {
+    return (
+      <OpeningExperience
+        onGetStarted={() => setStage('gate')}
+        onSignIn={() => {
+          setAuthMode('login');
+          setAuthOpen(true);
+        }}
+        onCreateAccount={() => {
+          setAuthMode('signup');
+          setAuthOpen(true);
+        }}
+        onSkip={() => setStage('gate')}
+      />
+    );
+  }
+
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 24,
-        textAlign: "center"
-      }}
-    >
-      <div style={{ maxWidth: 640 }}>
-        <div
-          style={{
-            color: "#14b8a6",
-            fontSize: 13,
-            fontWeight: 600,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase"
-          }}
-        >
-          WIHGO AI &bull; Connect Hub
+    <div className="min-h-screen bg-[#05070E] text-slate-100 relative overflow-hidden flex items-center justify-center p-6">
+      <BackgroundNetwork />
+      <div className="relative z-10 w-full max-w-sm text-center space-y-6 animate-fade-in">
+        <div className="flex justify-center">
+          <Logo size="lg" showText />
         </div>
-        <h1 style={{ color: "#fff", fontSize: 48, fontWeight: 700, margin: "16px 0 8px" }}>
-          Connect. Collaborate. Achieve.
-        </h1>
-        <p style={{ color: "#c7cdd1", fontSize: 17 }}>
-          Backend foundation is live. Sign-in and connectors activate as each
-          service is configured below.
-        </p>
-        <ul style={{ listStyle: "none", padding: 0, marginTop: 24, color: "#c7cdd1" }}>
-          <li>Database (Neon): {dbConfigured ? "configured ✓" : "not configured yet"}</li>
-          <li>Google (Gmail + Calendar): {googleConfigured ? "configured ✓" : "not configured yet"}</li>
-        </ul>
+        <div className="space-y-2">
+          <h1 className="text-2xl font-black text-white">Welcome back, Clare</h1>
+          <p className="text-xs text-slate-400">Demo entry — login screens are built but not enforced.</p>
+        </div>
+        <div className="space-y-3">
+          <button
+            onClick={enterDemo}
+            className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-teal-500 via-teal-600 to-teal-500 text-black font-extrabold text-sm shadow-[0_0_30px_rgba(13,148,136,0.45)] hover:scale-[1.02] transition-all"
+          >
+            Continue as Clare
+          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => {
+                setAuthMode('login');
+                setAuthOpen(true);
+              }}
+              className="flex-1 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-slate-200 hover:border-teal-500/50 hover:text-teal-300 transition-all"
+            >
+              Log in
+            </button>
+            <button
+              onClick={() => {
+                setAuthMode('signup');
+                setAuthOpen(true);
+              }}
+              className="flex-1 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-slate-200 hover:border-teal-500/50 hover:text-teal-300 transition-all"
+            >
+              Sign up
+            </button>
+          </div>
+        </div>
       </div>
-    </main>
+      {authOpen && (
+        <AuthModal
+          isOpen={authOpen}
+          initialMode={authMode}
+          onClose={() => setAuthOpen(false)}
+          onAuthenticate={() => {
+            setAuthOpen(false);
+            enterDemo();
+          }}
+        />
+      )}
+    </div>
   );
 }

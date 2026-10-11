@@ -293,3 +293,13 @@ Status: reached **Phase 1 of the implementation plan — initial local prototype
 - All data is mock/test data only, running locally in the browser with no server, no auth, and no database connected yet. No real credentials or keys in either file.
 
 Next phase: connect the Next.js app (already scaffolded in `web/`) to Better Auth and self-managed PostgreSQL, then wire up the Gmail connector to replace the mock messages with real ingested data and begin the memory extraction pipeline.
+
+## PWA (Installable App)
+
+The Next.js app in `app/` is an installable PWA:
+
+- **Manifest** (`app/public/manifest.webmanifest`): name "WIHGO AI Connect Hub", `start_url`/`scope` "/", `display` "standalone", `background_color` "#081012", `theme_color` "#073F42", with 192px + 512px (`any`) and 512px `maskable` icons generated from the W-logo branding into `app/public/icons/`.
+- **Icons**: `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` (safe-zone padded), plus `apple-touch-icon.png` (180px) referenced from layout metadata.
+- **Service worker** (`app/public/sw.js`, served with `Cache-Control: no-cache` via `next.config.mjs` headers): precaches `/`, `/offline`, icons and manifest; network-first with cache fallback for navigations; cache-first for static assets; never caches `/api/*`, `/login` or `/signup`. Registration happens on load via the `ServiceWorkerRegister` client component in `app/layout.tsx` (also carries manifest link, `themeColor` and `appleWebApp` metadata).
+- **Offline page** (`/offline`): branded retry screen shown when the network is down; `/` loads without login so `start_url` returns 200.
+- **Verify installability**: run `npm run build && npm run start`, open Chrome DevTools → Application → Manifest (no errors, icons listed) and Service Workers (registered), then run Lighthouse PWA checks; on a phone use browser menu → "Add to Home screen" / "Install app".
