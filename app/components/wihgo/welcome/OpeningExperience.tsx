@@ -125,7 +125,7 @@ export const OpeningExperience: React.FC<OpeningExperienceProps> = ({
           )}
         </div>
 
-        {/* Top Right Action (Skip or Sign In) */}
+        {/* Top Right Action (Skip) */}
         <div className="flex items-center gap-2">
           {/* Top Skip Button for Screens 2 and 3 */}
           {(currentStep === 1 || currentStep === 2) && (
@@ -137,15 +137,6 @@ export const OpeningExperience: React.FC<OpeningExperienceProps> = ({
               Skip
             </button>
           )}
-
-          {/* Sign In button for immediate access */}
-          <button
-            id="btn-intro-signin-top"
-            onClick={onSignIn}
-            className="text-xs font-bold text-slate-300 hover:text-white px-3.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-teal-500/20 hover:border-teal-500/40 transition-all cursor-pointer shadow-sm"
-          >
-            Sign In
-          </button>
         </div>
       </header>
 
@@ -209,10 +200,10 @@ export const OpeningExperience: React.FC<OpeningExperienceProps> = ({
               <button
                 id="btn-welcome-get-started"
                 onClick={onGetStarted}
-                className="w-full sm:flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-teal-600 via-teal-700 to-teal-800 text-white text-sm font-black shadow-[0_0_30px_rgba(13,148,136,0.45)] hover:shadow-[0_0_40px_rgba(13,148,136,0.65)] hover:scale-[1.02] active:scale-[0.98] border border-teal-400/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-black text-sm font-black shadow-[0_0_30px_rgba(13,148,136,0.45)] hover:shadow-[0_0_40px_rgba(13,148,136,0.65)] hover:scale-[1.02] active:scale-[0.98] border border-teal-300/50 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Get Started</span>
-                <ArrowRight className="w-4 h-4 text-teal-200" />
+                <ArrowRight className="w-4 h-4 text-black" />
               </button>
 
               <button

@@ -46,7 +46,7 @@ export class AIOrchestrator {
           reply: data.reply || 'WIHGO AI processed your request.',
           metadata: data.metadata || {
             provider: 'GEMINI',
-            model: 'gemini-3.6-flash',
+            model: 'gemini-3.8-flash',
             latencyMs: Date.now() - startTime,
             status: 'active'
           },

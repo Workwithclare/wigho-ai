@@ -303,3 +303,12 @@ The Next.js app in `app/` is an installable PWA:
 - **Service worker** (`app/public/sw.js`, served with `Cache-Control: no-cache` via `next.config.mjs` headers): precaches `/`, `/offline`, icons and manifest; network-first with cache fallback for navigations; cache-first for static assets; never caches `/api/*`, `/login` or `/signup`. Registration happens on load via the `ServiceWorkerRegister` client component in `app/layout.tsx` (also carries manifest link, `themeColor` and `appleWebApp` metadata).
 - **Offline page** (`/offline`): branded retry screen shown when the network is down; `/` loads without login so `start_url` returns 200.
 - **Verify installability**: run `npm run build && npm run start`, open Chrome DevTools → Application → Manifest (no errors, icons listed) and Service Workers (registered), then run Lighthouse PWA checks; on a phone use browser menu → "Add to Home screen" / "Install app".
+
+## APK (Android via PWA)
+
+No native rewrite: Android ships as a Trusted Web Activity (TWA) wrapping the deployed PWA, so the Play-store APK stays in sync with `https://wihgo.netlify.app` automatically.
+
+- **Prerequisites**: production deploy live on HTTPS with the manifest, icons and service worker above all serving correctly (Lighthouse PWA score green).
+- **Generate the APK/AAB**: use Bubblewrap (`npx @bubblewrap/cli init --manifest https://wihgo.netlify.app/manifest.webmanifest`, then `npx @bubblewrap/cli build`) which scaffolds the TWA project and outputs signed `app-release.apk` / `app-release-bundle.aab`. Memory/attention data stays server-side in Neon; the APK is online-first and needs no offline data sync.
+- **Signing**: create one upload keystore (`keytool -genkeypair -alias wihgo -keyalg RSA -keysize 2048 -validity 9125 -keystore wihgo-upload.keystore`), keep it out of git, put passwords only in CI secrets.
+- **Verify**: install the APK on a physical device, confirm splash → dashboard flow, login, and that `/api/*` calls hit production Neon data (not localhost).

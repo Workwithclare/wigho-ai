@@ -131,7 +131,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
               { id: 'business-hub', label: 'Business Hub', icon: Brain, highlight: true },
               { id: 'inbox', label: 'Messages', icon: MessageSquare, badge: unreadCountTotal },
               { id: 'social-hub', label: 'Social Hub', icon: Share2 },
-              { id: 'ai-assistant', label: 'WIHGO AI', icon: Bot },
+              { id: 'ai-assistant', label: 'WihGo Mind', icon: Bot },
               { id: 'business-assistant', label: 'Business Assistant', icon: Briefcase },
               { id: 'important', label: 'Important', icon: Star },
               { id: 'notifications', label: 'Notifications', icon: Bell }

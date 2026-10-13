@@ -13,6 +13,14 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [googleOn, setGoogleOn] = useState(false);
+
+  React.useEffect(() => {
+    fetch('/api/auth/providers')
+      .then((r) => (r.ok ? r.json() : { google: false }))
+      .then((d) => setGoogleOn(Boolean(d.google)))
+      .catch(() => setGoogleOn(false));
+  }, []);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,11 +71,44 @@ export default function LoginPage() {
             {loading ? 'Signing in…' : 'Sign In'}
           </button>
         </form>
+        <div className="relative flex items-center justify-center">
+          <div className="border-t border-slate-800 w-full" />
+          <span className="bg-[#05070E] px-3 text-[11px] text-slate-500 uppercase font-medium">
+            or continue
+          </span>
+        </div>
+        {googleOn ? (
+          <button
+            onClick={async () => {
+              setError(null);
+              try {
+                const res = await authClient.signIn.social({ provider: 'google', callbackURL: '/dashboard' });
+                if (res.error) setError(res.error.message || 'Google sign-in could not be completed.');
+              } catch {
+                setError('Google sign-in could not be completed.');
+              }
+            }}
+            className="w-full py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-white hover:border-slate-600 transition-all"
+          >
+            Continue with Google
+          </button>
+        ) : (
+          <div className="w-full py-2.5 rounded-xl bg-slate-900/60 border border-slate-800 text-slate-500 font-semibold text-xs text-center">
+            Google sign-in — Coming soon
+          </div>
+        )}
+        <button
+          onClick={() => {
+            try { localStorage.setItem('wihgo_demo_auth', 'true'); } catch {}
+            router.push('/dashboard');
+          }}
+          className="w-full py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-slate-200 hover:border-teal-500/50 hover:text-teal-300 transition-all"
+        >
+          Continue as demo
+        </button>
         <div className="text-center text-xs text-slate-400 space-x-1">
           <span>No account?</span>
           <Link href="/signup" className="text-teal-300 font-bold">Create Account</Link>
-          <span>·</span>
-          <Link href="/" className="text-slate-300">Continue as Clare (demo)</Link>
         </div>
       </div>
     </div>

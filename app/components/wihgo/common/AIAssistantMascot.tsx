@@ -107,7 +107,7 @@ export const AIAssistantMascot: React.FC<AIAssistantMascotProps> = ({
           {/* Bottom Chest Indicator / Badge */}
           <div className="flex items-center justify-center gap-1 text-[9px] font-black text-cyan-300 uppercase tracking-widest pt-1">
             <Sparkles className="w-3 h-3 text-cyan-400" />
-            <span>WIHGO AI</span>
+            <span>WihGo Mind</span>
           </div>
         </div>
       </div>

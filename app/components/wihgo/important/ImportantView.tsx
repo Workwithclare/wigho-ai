@@ -70,7 +70,7 @@ export const ImportantView: React.FC<ImportantViewProps> = ({
           className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-gradient-to-r from-amber-500/20 via-indigo-600/20 to-purple-600/20 border border-amber-500/30 text-amber-300 text-xs font-semibold hover:border-amber-400 transition-all shadow-md self-start sm:self-auto"
         >
           <Sparkles className="w-4 h-4 text-amber-400" />
-          <span>WIHGO Priority Summary</span>
+          <span>WihGo Mind Priority Summary</span>
         </button>
       </div>
 

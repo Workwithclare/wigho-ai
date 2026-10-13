@@ -54,8 +54,8 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
       id: 'welcome-1',
       sender: 'assistant',
       text: user?.name 
-        ? `Hi ${user.name.split(' ')[0]} 👋 I'm WIHGO AI. Ask me anything via text or tap the microphone to speak naturally.`
-        : "Hi, I'm WIHGO AI 👋 How can I help you achieve your goals today? Type a message or tap the microphone to speak.",
+        ? `Hi ${user.name.split(' ')[0]} 👋 I'm WihGo Mind. Ask me anything via text or tap the microphone to speak naturally.`
+        : "Hi, I'm WihGo Mind 👋 How can I help you achieve your goals today? Type a message or tap the microphone to speak.",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       metadata: {
         provider: 'WIHGO',
@@ -103,7 +103,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
         {
           id: 'welcome-1',
           sender: 'assistant',
-          text: `Hi ${user.name.split(' ')[0]} 👋 I'm WIHGO AI. Ask me anything via text or tap the microphone to speak naturally.`,
+          text: `Hi ${user.name.split(' ')[0]} 👋 I'm WihGo Mind. Ask me anything via text or tap the microphone to speak naturally.`,
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           metadata: {
             provider: 'WIHGO',
@@ -238,7 +238,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
       }
     } catch (err) {
       const errorMsgId = `err-${Date.now()}`;
-      const fallbackText = `Yes, ${userName}. WIHGO AI has received your command. Your connected channels are monitored.`;
+      const fallbackText = `Yes, ${userName}. WihGo Mind has received your command. Your connected channels are monitored.`;
       const errorMsg: ChatMessage = {
         id: errorMsgId,
         sender: 'assistant',
@@ -410,7 +410,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
             </div>
             <div>
               <h2 className="text-sm font-bold text-white flex items-center gap-1.5">
-                <span>WIHGO AI Assistant</span>
+                <span>WihGo Mind</span>
               </h2>
               <p className="text-[11px] text-teal-300">Text & Voice Integrated</p>
             </div>
@@ -562,7 +562,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
                 </button>
               </div>
               <div className="text-[11px] text-white italic">
-                {recordedSpeech || 'Speak naturally to WIHGO AI...'}
+                {recordedSpeech || 'Speak naturally to WihGo Mind...'}
               </div>
             </div>
           )}
@@ -625,7 +625,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleSend();
               }}
-              placeholder={isListening ? "Listening... Speak naturally" : "Type or speak to WIHGO..."}
+              placeholder={isListening ? "Listening... Speak naturally" : "Type or speak to WihGo Mind..."}
               className="flex-1 bg-transparent text-xs text-white placeholder-slate-500 px-3 py-2 focus:outline-none"
             />
 

@@ -110,7 +110,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'inbox', label: 'Messages', icon: MessageSquare, badge: unreadCountTotal },
     { id: 'connect', label: 'Connect Hub', icon: LinkIcon },
     { id: 'social-hub', label: 'Social Hub', icon: Share2 },
-    { id: 'ai-assistant', label: 'WIHGO AI', icon: Bot },
+    { id: 'ai-assistant', label: 'WihGo Mind', icon: Bot },
     { id: 'business-assistant', label: 'Business Assistant', icon: Briefcase },
     { id: 'important', label: 'Important', icon: Star },
     { id: 'notifications', label: 'Notifications', icon: Bell, isNotifTrigger: true }

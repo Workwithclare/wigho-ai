@@ -10,6 +10,7 @@ interface SendOpts {
   html: string;
   userId?: string | null;
   draftId?: string;
+  from?: string;
 }
 
 // Returns { ok, providerId? }. Never throws — logs failures into sent_log.
@@ -32,7 +33,7 @@ export async function sendEmail(opts: SendOpts): Promise<{ ok: boolean; provider
   }
   try {
     const resend = new Resend(apiKey);
-    const { data, error } = await resend.emails.send({ from: FROM, to: opts.to, subject: opts.subject, html: opts.html });
+    const { data, error } = await resend.emails.send({ from: opts.from || FROM, to: opts.to, subject: opts.subject, html: opts.html });
     if (error) throw new Error(error.message);
     await db.insert(sentLog).values({
       id,

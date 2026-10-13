@@ -545,7 +545,7 @@ export const BusinessAssistantView: React.FC<BusinessAssistantViewProps> = ({
                 { name: 'Google Workspace', status: '8 Services (Gmail, Cal, Meet, Drive, Docs...)', health: 'Optimal' },
                 { name: 'Meta Business Suite', status: 'WhatsApp + Instagram + Facebook', health: 'Active' },
                 { name: 'Stripe & Payments', status: 'Direct webhook processing', health: 'Connected' },
-                { name: 'Supabase Cloud Database', status: 'PostgreSQL Real-time sync', health: 'Operational' }
+                { name: 'Neon Postgres Database', status: 'PostgreSQL live sync', health: 'Operational' }
               ].map((h, idx) => (
                 <div key={idx} className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
                   <div>

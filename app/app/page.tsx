@@ -4,16 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { OpeningMotionSequence } from '../components/wihgo/welcome/OpeningMotionSequence';
 import { OpeningExperience } from '../components/wihgo/welcome/OpeningExperience';
-import { AuthModal } from '../components/wihgo/auth/AuthModal';
 import { BackgroundNetwork } from '../components/common/BackgroundNetwork';
 import { Logo } from '../components/common/Logo';
-import { INITIAL_USER_PROFILE } from '../lib/wihgo/mockData';
 
 export default function RootFlow() {
   const router = useRouter();
   const [stage, setStage] = useState<'splash' | 'opening' | 'gate'>('splash');
-  const [authOpen, setAuthOpen] = useState(false);
-  const [authMode, setAuthMode] = useState<'login' | 'signup' | 'forgot' | 'verify' | 'update_password'>('login');
 
   useEffect(() => {
     try {
@@ -36,15 +32,9 @@ export default function RootFlow() {
   if (stage === 'opening') {
     return (
       <OpeningExperience
-        onGetStarted={() => setStage('gate')}
-        onSignIn={() => {
-          setAuthMode('login');
-          setAuthOpen(true);
-        }}
-        onCreateAccount={() => {
-          setAuthMode('signup');
-          setAuthOpen(true);
-        }}
+        onGetStarted={() => router.push('/signup')}
+        onSignIn={() => router.push('/login')}
+        onCreateAccount={() => router.push('/signup')}
         onSkip={() => setStage('gate')}
       />
     );
@@ -70,19 +60,13 @@ export default function RootFlow() {
           </button>
           <div className="flex gap-2">
             <button
-              onClick={() => {
-                setAuthMode('login');
-                setAuthOpen(true);
-              }}
+              onClick={() => router.push('/login')}
               className="flex-1 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-slate-200 hover:border-teal-500/50 hover:text-teal-300 transition-all"
             >
               Log in
             </button>
             <button
-              onClick={() => {
-                setAuthMode('signup');
-                setAuthOpen(true);
-              }}
+              onClick={() => router.push('/signup')}
               className="flex-1 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-slate-200 hover:border-teal-500/50 hover:text-teal-300 transition-all"
             >
               Sign up
@@ -90,17 +74,6 @@ export default function RootFlow() {
           </div>
         </div>
       </div>
-      {authOpen && (
-        <AuthModal
-          isOpen={authOpen}
-          initialMode={authMode}
-          onClose={() => setAuthOpen(false)}
-          onAuthenticate={() => {
-            setAuthOpen(false);
-            enterDemo();
-          }}
-        />
-      )}
     </div>
   );
 }

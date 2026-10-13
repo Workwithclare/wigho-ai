@@ -123,7 +123,7 @@ export const BusinessHubView: React.FC<BusinessHubViewProps> = ({
       sender: 'ai',
       text: `Hello ${user?.name ? user.name.split(' ')[0] : 'there'}, I am your WIHGO Business Hub Intelligence. I continuously monitor and remember activity across all your connected channels (Gmail, WhatsApp, Camera, Hash, Calendar). Ask me anything about customer history, open promises, pending decisions, or what needs your attention.`,
       timestamp: 'Just now',
-      citations: ['Connected Business Context Engine', 'Supabase Business RLS Layer']
+      citations: ['Connected Business Context Engine', 'Neon Postgres Layer']
     }
   ]);
   const [isAiAnswering, setIsAiAnswering] = useState<boolean>(false);

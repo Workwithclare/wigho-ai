@@ -30,7 +30,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
     { id: 'home', label: 'Home', icon: Home },
     { id: 'social-hub', label: 'Social', icon: Share2 },
     { id: 'content-creation', label: 'Create', icon: Sparkles },
-    { id: 'ai-assistant', label: 'WIHGO AI', icon: Bot },
+    { id: 'ai-assistant', label: 'WihGo Mind', icon: Bot },
     { id: 'business-assistant', label: 'Business', icon: Briefcase },
     { id: 'more', label: 'More', icon: Menu, isDrawer: true }
   ];

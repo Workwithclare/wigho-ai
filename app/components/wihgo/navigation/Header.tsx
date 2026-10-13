@@ -113,10 +113,10 @@ export const Header: React.FC<HeaderProps> = ({
           id="btn-quick-ai-trigger"
           onClick={openAiAssistant}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-teal-500/20 via-teal-700/20 to-teal-900/20 border border-teal-400/30 text-teal-300 hover:text-white hover:border-teal-400 transition-all text-xs font-semibold shadow-sm cursor-pointer"
-          title="Open WIHGO AI Assistant (Chat & Voice)"
+          title="Open WihGo Mind (Chat & Voice)"
         >
           <Sparkles className="w-3.5 h-3.5 text-teal-400 animate-spin-slow" />
-          <span className="hidden xs:inline">WIHGO AI</span>
+          <span className="hidden xs:inline">WihGo Mind</span>
         </button>
 
         {/* Notification Bell */}

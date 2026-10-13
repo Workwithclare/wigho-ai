@@ -2,8 +2,11 @@
 node_modules/
 
 # Next.js
+.next/
 web/.next/
+app/.next/
 web/out/
+app/out/
 
 # Env files (real secrets — never commit; see web/.env.example for placeholders)
 .env

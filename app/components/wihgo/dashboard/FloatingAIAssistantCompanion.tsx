@@ -81,9 +81,9 @@ export const FloatingAIAssistantCompanion: React.FC<FloatingAIAssistantCompanion
     }
   };
 
-  const welcomeMessage = userName 
-    ? `Hi, I'm WIHGO AI 👋 I'm here to help you manage your business conversations, connected platforms and daily tasks.`
-    : "Hi, I'm WIHGO AI 👋 I'm here to help you manage your business conversations, connected platforms and daily tasks.";
+  const welcomeMessage = userName
+    ? `Hi, I'm WihGo Mind 👋 I'm here to help you manage your business conversations, connected platforms and daily tasks.`
+    : "Hi, I'm WihGo Mind 👋 I'm here to help you manage your business conversations, connected platforms and daily tasks.";
 
   const currentMessage = messageIndex === 0 
     ? welcomeMessage 
@@ -105,7 +105,7 @@ export const FloatingAIAssistantCompanion: React.FC<FloatingAIAssistantCompanion
       onMouseLeave={() => setIsHovered(false)}
       className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-40 max-w-sm w-[calc(100vw-2rem)] sm:w-88 transition-all duration-500 ease-out transform translate-y-0 opacity-100 animate-in fade-in slide-in-from-bottom-5"
       role="complementary"
-      aria-label="WIHGO AI Companion"
+      aria-label="WihGo Mind Companion"
     >
       <div 
         onClick={handleCardClick}
@@ -131,7 +131,7 @@ export const FloatingAIAssistantCompanion: React.FC<FloatingAIAssistantCompanion
 
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="text-xs font-black tracking-wider text-white">WIHGO AI</span>
+                <span className="text-xs font-black tracking-wider text-white">WihGo Mind</span>
                 <span className="rounded-full bg-cyan-500/20 px-1.5 py-0.2 text-[9px] font-bold text-cyan-300 border border-cyan-500/30 uppercase">
                   Companion
                 </span>
@@ -147,7 +147,7 @@ export const FloatingAIAssistantCompanion: React.FC<FloatingAIAssistantCompanion
             id="btn-dismiss-ai-companion"
             onClick={handleDismiss}
             title="Dismiss for this session"
-            aria-label="Dismiss WIHGO AI companion"
+            aria-label="Dismiss WihGo Mind companion"
             className="rounded-lg p-1 text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors"
           >
             <X className="h-4 w-4" />
@@ -166,7 +166,7 @@ export const FloatingAIAssistantCompanion: React.FC<FloatingAIAssistantCompanion
         <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-800/60">
           <span className="text-[10px] font-semibold text-cyan-400 group-hover:text-cyan-300 transition-colors flex items-center gap-1">
             <MessageSquare className="h-3 w-3" />
-            <span>Open WIHGO AI</span>
+            <span>Open WihGo Mind</span>
           </span>
 
           <span className="rounded-lg bg-cyan-500/15 group-hover:bg-cyan-500/25 border border-cyan-500/30 px-2 py-1 text-[10px] font-bold text-cyan-300 transition-all flex items-center gap-1">

@@ -163,7 +163,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
       if (user.id && user.id !== 'default') {
         const blob = await createProcessedBlob();
-        // Upload to Supabase Storage bucket 'avatars' with account-based path
+        // Avatar upload is disabled in this build (no storage bucket wired yet)
         finalAvatarUrl = await uploadAvatarImage(user.id, blob);
       }
 

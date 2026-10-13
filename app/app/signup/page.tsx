@@ -12,19 +12,44 @@ export default function SignupPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [googleOn, setGoogleOn] = useState(false);
+
+  React.useEffect(() => {
+    fetch('/api/auth/providers')
+      .then((r) => (r.ok ? r.json() : { google: false }))
+      .then((d) => setGoogleOn(Boolean(d.google)))
+      .catch(() => setGoogleOn(false));
+  }, []);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    if (!name.trim()) {
+      setError('Please enter your full name.');
+      return;
+    }
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
     setLoading(true);
     try {
-      const res = await authClient.signUp.email({ name: name.trim(), email: email.trim(), password });
+      const res = await authClient.signUp.email({
+        name: name.trim(),
+        email: email.trim(),
+        password,
+        callbackURL: "/dashboard",
+      });
       if (res.error) {
         setError(res.error.message || 'Could not create account. Try a stronger password (8+ chars).');
       } else {
-        try { localStorage.setItem('wihgo_demo_auth', 'true'); } catch {}
         router.push('/dashboard');
       }
     } catch {
@@ -61,6 +86,11 @@ export default function SignupPage() {
             placeholder="Password (8+ characters)" autoComplete="new-password"
             className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder:text-slate-500"
           />
+          <input
+            type="password" required minLength={8} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm Password" autoComplete="new-password"
+            className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder:text-slate-500"
+          />
           {error && <p className="text-xs text-red-400">{error}</p>}
           <button
             type="submit" disabled={loading}
@@ -69,6 +99,41 @@ export default function SignupPage() {
             {loading ? 'Creating…' : 'Create Account'}
           </button>
         </form>
+        <div className="relative flex items-center justify-center">
+          <div className="border-t border-slate-800 w-full" />
+          <span className="bg-[#05070E] px-3 text-[11px] text-slate-500 uppercase font-medium">
+            or continue
+          </span>
+        </div>
+        {googleOn ? (
+          <button
+            onClick={async () => {
+              setError(null);
+              try {
+                const res = await authClient.signIn.social({ provider: 'google', callbackURL: '/dashboard' });
+                if (res.error) setError(res.error.message || 'Google sign-in could not be completed.');
+              } catch {
+                setError('Google sign-in could not be completed.');
+              }
+            }}
+            className="w-full py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-white hover:border-slate-600 transition-all"
+          >
+            Continue with Google
+          </button>
+        ) : (
+          <div className="w-full py-2.5 rounded-xl bg-slate-900/60 border border-slate-800 text-slate-500 font-semibold text-xs text-center">
+            Google sign-in — Coming soon
+          </div>
+        )}
+        <button
+          onClick={() => {
+            try { localStorage.setItem('wihgo_demo_auth', 'true'); } catch {}
+            router.push('/dashboard');
+          }}
+          className="w-full py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-slate-200 hover:border-teal-500/50 hover:text-teal-300 transition-all"
+        >
+          Continue as demo
+        </button>
         <div className="text-center text-xs text-slate-400 space-x-1">
           <span>Have an account?</span>
           <Link href="/login" className="text-teal-300 font-bold">Sign In</Link>

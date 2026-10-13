@@ -1,6 +1,6 @@
 "use client";
 
-// Demo offline backend — replaces Supabase / Google / dbService for the clickable mock app.
+// Demo offline backend — local mock data for the clickable demo (no backend calls).
 // Everything is any-typed on purpose: legacy screens expect rich shapes; demo returns safe empties.
 
 import { INITIAL_USER_PROFILE } from './mockData';

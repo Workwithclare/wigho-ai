@@ -54,7 +54,7 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
     {
       id: 'welcome-1',
       sender: 'assistant',
-      text: `Hi ${userName}. I'm WIHGO AI. How can I help you today? You can type your message or tap the microphone to speak naturally.`,
+      text: `Hi ${userName}. I'm WihGo Mind. How can I help you today? You can type your message or tap the microphone to speak naturally.`,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -278,7 +278,7 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
       }
     } catch (err) {
       const fallbackId = `ai-${Date.now()}`;
-      const fallbackText = `Yes, ${userName}. I received your request: "${textToSend}". WIHGO AI is actively monitoring your connected accounts to optimize your business operations.`;
+      const fallbackText = `Yes, ${userName}. I received your request: "${textToSend}". WihGo Mind is actively monitoring your connected accounts to optimize your business operations.`;
       
       const fallbackMsg: ChatMessage = {
         id: fallbackId,
@@ -440,7 +440,7 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
 
         <div className="space-y-1">
           <h1 className="text-2xl font-black text-white tracking-tight">
-            Hi {userName}, I'm WIHGO AI. 👋
+            Hi {userName}, I'm WihGo Mind. 👋
           </h1>
           <p className="text-xs text-teal-300 font-semibold">
             One unified assistant for text & voice. How can I help you achieve your goals today?
@@ -474,7 +474,7 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
           <div className="flex items-center gap-2">
             <Bot className="w-5 h-5 text-teal-400" />
             <div>
-              <h2 className="text-sm font-bold text-white">WIHGO AI Assistant</h2>
+              <h2 className="text-sm font-bold text-white">WihGo Mind</h2>
               <p className="text-[10px] text-slate-400">Continuous conversation • Text & Voice</p>
             </div>
           </div>
@@ -746,7 +746,7 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
                   ? 'bg-teal-500 text-slate-950 border-teal-400 animate-pulse shadow-lg shadow-teal-500/30'
                   : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-teal-300 hover:border-teal-500/30'
               }`}
-              title={isListening ? "Stop recording" : "Tap to speak with WIHGO AI"}
+              title={isListening ? "Stop recording" : "Tap to speak with WihGo Mind"}
             >
               {isListening ? (
                 <MicOff className="w-4 h-4" />

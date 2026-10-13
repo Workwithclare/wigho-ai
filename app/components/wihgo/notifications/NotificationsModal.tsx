@@ -336,7 +336,7 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({
         <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500">
           <div className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Synced with Supabase Live</span>
+            <span>Synced with Neon Live</span>
           </div>
           <span>WIHGO Hub Security</span>
         </div>

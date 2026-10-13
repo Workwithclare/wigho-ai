@@ -124,8 +124,8 @@ export const PlatformConnectorModal: React.FC<PlatformConnectorModalProps> = ({
           headline: 'Direct Google OAuth authorization for synchronized inbox, real-time message summaries, and smart drafting.',
           authType: 'Google OAuth 2.0 (Gmail API)',
           permissions: ['https://mail.google.com/', 'https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/gmail.send', 'Read & Send Messages', 'Thread Sync'],
-          scopeNote: 'Secured via standard Google Identity Services and Supabase OAuth token exchange.',
-          setupRequirements: 'Requires Google OAuth consent screen & enabled Gmail scopes in your Google Cloud / Supabase project.'
+          scopeNote: 'Secured via standard Google Identity Services and BetterAuth OAuth token exchange.',
+          setupRequirements: 'Requires Google OAuth consent screen & enabled Gmail scopes in your Google Cloud project.'
         };
       case 'whatsapp':
         return {

@@ -255,7 +255,7 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
     } else if (text.toLowerCase().includes('follow')) {
       setActiveModalFeature('follow-ups');
     } else {
-      setModalMessage(`WIHGO AI analyzed your query: "${text}". Processing across your connected business tools.`);
+      setModalMessage(`WihGo Mind analyzed your query: "${text}". Processing across your connected business tools.`);
       setActiveModalFeature('generic');
     }
     setCommandInput('');
