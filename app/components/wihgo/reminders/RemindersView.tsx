@@ -67,6 +67,12 @@ export const RemindersView: React.FC<RemindersViewProps> = ({
       </div>
 
       <div className="space-y-3">
+        {reminders.length === 0 && (
+          <div className="p-6 rounded-3xl border border-slate-800 bg-slate-900/60 text-center">
+            <p className="text-sm font-bold text-white">No reminders yet</p>
+            <p className="text-xs text-slate-400 mt-1">Add your first reminder with the New Reminder button above.</p>
+          </div>
+        )}
         {reminders.map((r) => (
           <div
             key={r.id}

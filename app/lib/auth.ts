@@ -35,7 +35,9 @@ export const auth = betterAuth({
     sendOnSignUp: true,
     autoSignInAfterVerification: true,
     sendVerificationEmail: async ({ user, url }) => {
-      await sendEmail({
+      // Fire-and-forget: respond to signup immediately, email sends in background.
+      // sendEmail never throws and always logs to sent_log, so failures stay visible.
+      void sendEmail({
         to: user.email,
         from: VERIFY_FROM,
         subject: "Verify your WihGo AI account",

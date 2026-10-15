@@ -270,7 +270,7 @@ export interface BusinessMemoryItem {
   sentiment?: 'positive' | 'neutral' | 'urgent' | 'caution';
   status?: 'active' | 'pending' | 'resolved' | 'archived';
   confidence?: number;
-  extractedFrom?: string; // e.g. "Instagram DM", "WhatsApp Conversation with Sarah"
+  extractedFrom?: string; // e.g. "Instagram DM", "WhatsApp conversation"
   relatedCustomer?: string;
   amountOrValue?: string;
   dueDateOrTime?: string;

@@ -502,7 +502,7 @@ export const SocialHubView: React.FC<SocialHubViewProps> = ({
               {[
                 { user: '@sarah_design', platform: 'Instagram DM', text: 'Loved your latest case study! Can we book a consultation call for next week?', time: '5m ago' },
                 { user: 'David K. (TechCorp)', platform: 'LinkedIn InMail', text: 'Interested in the enterprise sync integration. Does this support custom webhook endpoints?', time: '22m ago' },
-                { user: '+1 (555) 234-8901', platform: 'WhatsApp Business', text: 'Hello, please send the pricing breakdown for the growth bundle.', time: '1h ago' }
+                { user: '', platform: '', text: '', time: '' }
               ].map((msg, idx) => (
                 <div key={idx} className="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-center justify-between gap-3">
                   <div className="space-y-1">

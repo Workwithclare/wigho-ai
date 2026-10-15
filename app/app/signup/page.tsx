@@ -3,9 +3,20 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Eye, EyeOff } from 'lucide-react';
 import { BackgroundNetwork } from '../../components/common/BackgroundNetwork';
 import { WihgoSymbol } from '../../components/common/Logo';
 import { authClient } from '../../lib/auth-client';
+
+function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error('timeout')), ms);
+    p.then(
+      (v) => { clearTimeout(t); resolve(v); },
+      (e) => { clearTimeout(t); reject(e); }
+    );
+  });
+}
 
 export default function SignupPage() {
   const router = useRouter();
@@ -13,6 +24,8 @@ export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [googleOn, setGoogleOn] = useState(false);
@@ -41,19 +54,26 @@ export default function SignupPage() {
     }
     setLoading(true);
     try {
-      const res = await authClient.signUp.email({
-        name: name.trim(),
-        email: email.trim(),
-        password,
-        callbackURL: "/dashboard",
-      });
+      const res = await withTimeout(
+        authClient.signUp.email({
+          name: name.trim(),
+          email: email.trim(),
+          password,
+          callbackURL: "/dashboard",
+        }),
+        25000
+      );
       if (res.error) {
         setError(res.error.message || 'Could not create account. Try a stronger password (8+ chars).');
       } else {
         router.push('/dashboard');
       }
-    } catch {
-      setError('Failed to fetch — is the dev server running and BETTER_AUTH_URL=http://localhost:3000 set?');
+    } catch (err: any) {
+      setError(
+        err?.message === 'timeout'
+          ? 'Signup is taking too long — your account may have been created. Wait a moment, then try signing in.'
+          : 'Cannot reach the server. Check your connection and try again.'
+      );
     } finally {
       setLoading(false);
     }
@@ -72,25 +92,51 @@ export default function SignupPage() {
         </div>
         <form onSubmit={onSubmit} className="space-y-3 p-5 rounded-2xl bg-slate-900/80 border border-teal-500/20">
           <input
+            id="signup-name" name="name"
             type="text" required value={name} onChange={(e) => setName(e.target.value)}
             placeholder="Full Name" autoComplete="name"
             className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder:text-slate-500"
           />
           <input
+            id="signup-email" name="email"
             type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
             placeholder="Email" autoComplete="email"
             className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder:text-slate-500"
           />
-          <input
-            type="password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password (8+ characters)" autoComplete="new-password"
-            className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder:text-slate-500"
-          />
-          <input
-            type="password" required minLength={8} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm Password" autoComplete="new-password"
-            className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder:text-slate-500"
-          />
+          <div className="relative">
+            <input
+              id="signup-password" name="password"
+              type={showPassword ? 'text' : 'password'} required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password (8+ characters)" autoComplete="new-password"
+              className="w-full px-3 py-2.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder:text-slate-500"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              title={showPassword ? 'Hide password' : 'Show password'}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+            >
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          </div>
+          <div className="relative">
+            <input
+              id="signup-confirm-password" name="confirmPassword"
+              type={showConfirm ? 'text' : 'password'} required minLength={8} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm Password" autoComplete="new-password"
+              className="w-full px-3 py-2.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder:text-slate-500"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirm((v) => !v)}
+              aria-label={showConfirm ? 'Hide password' : 'Show password'}
+              title={showConfirm ? 'Hide password' : 'Show password'}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+            >
+              {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          </div>
           {error && <p className="text-xs text-red-400">{error}</p>}
           <button
             type="submit" disabled={loading}
@@ -125,15 +171,6 @@ export default function SignupPage() {
             Google sign-in — Coming soon
           </div>
         )}
-        <button
-          onClick={() => {
-            try { localStorage.setItem('wihgo_demo_auth', 'true'); } catch {}
-            router.push('/dashboard');
-          }}
-          className="w-full py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-slate-200 hover:border-teal-500/50 hover:text-teal-300 transition-all"
-        >
-          Continue as demo
-        </button>
         <div className="text-center text-xs text-slate-400 space-x-1">
           <span>Have an account?</span>
           <Link href="/login" className="text-teal-300 font-bold">Sign In</Link>

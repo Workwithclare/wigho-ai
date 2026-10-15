@@ -1,4 +1,12 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, integer, primaryKey } from "drizzle-orm/pg-core";
+
+// Per-user daily AI usage counter (rate limit). Additive table for Phase 2.
+export const aiUsage = pgTable("ai_usage", {
+  userId: text("user_id").notNull(),
+  day: text("day").notNull(),
+  count: integer("count").notNull().default(0),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (t) => [primaryKey({ columns: [t.userId, t.day] })]);
 
 // ---------------------------------------------------------------------------
 // WihGo business tables — these already exist in Neon with real data.

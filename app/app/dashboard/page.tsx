@@ -1,33 +1,63 @@
 "use client";
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { AppShell, TAB_TO_ROUTE } from '../../components/wihgo/AppShell';
+import React, { useCallback, useEffect, useState } from 'react';
+import { AppShell } from '../../components/wihgo/AppShell';
 import { useWihgo } from '../../lib/wihgo/store';
-import { HomeDashboard } from '../../components/wihgo/dashboard/HomeDashboard';
-import { DAILY_SPARKS } from '../../lib/wihgo/mockData';
+import { useSession } from '../../lib/auth-client';
+import { WihgoDashboard } from '../../components/wihgo/dashboard/WihgoDashboard';
+import { AskMindBar, CaptureBox, CatchMeUpButton } from '../../components/wihgo/dashboard/MindWidgets';
+import type { FollowUpItem } from '../../lib/wihgo/types';
 
 function Screen() {
   const s = useWihgo();
-  const router = useRouter();
-  const nav = (tab: any) => router.push(TAB_TO_ROUTE[tab] || '/dashboard');
+  const { data: sessionData } = useSession();
+  const remoteMode = !!sessionData?.user;
+  const [items, setItems] = useState<FollowUpItem[]>([]);
+
+  const reload = useCallback(() => {
+    if (!remoteMode) {
+      setItems([]);
+      return;
+    }
+    fetch('/api/commitments')
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((rows) => {
+        if (Array.isArray(rows)) setItems(rows);
+      })
+      .catch(() => setItems([]));
+  }, [remoteMode]);
+
+  useEffect(() => {
+    reload();
+  }, [reload]);
+
+  const toggleItem = (id: string) => {
+    const target = items.find((f) => f.id === id);
+    const completed = target?.status !== 'completed';
+    setItems((p) =>
+      p.map((f) => (f.id === id ? { ...f, status: (completed ? 'completed' : 'pending') as FollowUpItem['status'] } : f))
+    );
+    fetch(`/api/commitments/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ completed }),
+    }).catch(() => {});
+  };
+
   return (
-    <HomeDashboard
-      user={s.user}
-      platforms={s.platforms}
-      conversations={s.conversations}
-      events={s.events}
-      tasks={s.tasks}
-      reminders={s.reminders}
-      dailySparks={DAILY_SPARKS}
-      onNavigate={nav}
-      onOpenWorkspace={() => router.push('/messages')}
-      openAiAssistant={() => s.setAiOpen(true)}
-      onToggleTask={s.toggleTask}
-      onToggleReminder={s.toggleReminder}
-      onOpenConnectorModal={(p: any) => s.toggleConnection(p.id)}
-      onStatusChange={(id: any, st: any) => s.toggleConnection(id)}
-    />
+    <div className="space-y-6">
+      <WihgoDashboard
+        tasks={s.tasks}
+        followUps={items}
+        userName={(sessionData?.user as any)?.name || ''}
+        userEmail={sessionData?.user?.email || ''}
+        onToggleTask={s.toggleTask}
+        onToggleFollowUp={toggleItem}
+      />
+      <CaptureBox onSaved={reload} />
+      <CatchMeUpButton />
+      <AskMindBar />
+    </div>
   );
 }
 

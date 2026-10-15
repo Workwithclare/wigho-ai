@@ -92,7 +92,7 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
   // Suggested conversational quick prompts
   const suggestedActions = [
     { title: "What should I prioritize today?", prompt: `What should I prioritize today?` },
-    { title: "Summarize my day", prompt: `WIHGO, summarize my day and what I need to focus on today.` },
+    { title: "Summarize my day", prompt: `WihGo Mind, summarize my day and what I need to focus on today.` },
     { title: "What meetings do I have?", prompt: `What meetings and calendar events do I have today?` },
     { title: "Read important messages", prompt: `Read my important customer messages and unread inquiries across WhatsApp and Camera.` },
     { title: "Remind priority tasks", prompt: `Remind me about my top priority business tasks for today.` },

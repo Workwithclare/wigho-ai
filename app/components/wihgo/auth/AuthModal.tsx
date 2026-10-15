@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Eye,
   EyeOff,
-  Lock,
   Mail,
   ArrowLeft,
   CheckCircle2,
@@ -182,11 +181,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleDemo = () => {
-    onAuthenticate({ ...INITIAL_USER_PROFILE, id: 'clare-demo', name: 'Clare' });
-    onClose();
   };
 
   return (
@@ -424,15 +418,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               )}
 
-              <button
-                id="btn-continue-demo"
-                type="button"
-                onClick={handleDemo}
-                className="w-full py-2.5 px-4 rounded-2xl bg-teal-500/10 border border-teal-500/30 hover:border-teal-500/50 text-teal-300 font-semibold text-xs flex items-center justify-center gap-2 transition-all"
-              >
-                <Lock className="w-4 h-4" />
-                <span>Continue as demo</span>
-              </button>
             </div>
           </div>
         )}

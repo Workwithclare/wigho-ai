@@ -6,8 +6,6 @@
 import { INITIAL_USER_PROFILE } from './mockData';
 import type { UserProfile } from './types';
 
-export const isSupabaseConfigured = false;
-
 const demoUser = (email?: string): UserProfile => ({
   ...INITIAL_USER_PROFILE,
   id: 'clare-demo',

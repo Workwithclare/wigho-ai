@@ -8,10 +8,18 @@ import { ProfileView } from '../../components/wihgo/profile/ProfileView';
 
 function Screen() {
   const s = useWihgo();
+  const handleUpdateUser = (u: typeof s.user) => {
+    s.setUser(u);
+    fetch('/api/profile', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: u.name }),
+    }).catch(() => {});
+  };
   return (
     <ProfileView
       user={s.user}
-      onUpdateUser={s.setUser}
+      onUpdateUser={handleUpdateUser}
       platforms={s.platforms}
       soundEnabled={s.soundEnabled}
       onToggleSound={s.toggleSound}

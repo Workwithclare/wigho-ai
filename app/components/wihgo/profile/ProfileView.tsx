@@ -480,7 +480,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 type="tel"
                 value={formData.phone || ''}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
-                placeholder="+1 (555) 000-0000"
+                placeholder="Phone number"
                 className="w-full bg-slate-950 text-xs text-white p-3 rounded-xl border border-slate-800 focus:border-cyan-400 focus:outline-none"
               />
             </div>

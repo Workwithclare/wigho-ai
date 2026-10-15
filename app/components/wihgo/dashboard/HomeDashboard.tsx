@@ -98,8 +98,8 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
 
   const safeUser: UserProfile = user || {
     id: 'default',
-    name: 'Clare',
-    email: 'workwithclare1@gmail.com',
+    name: '',
+    email: '',
     avatar: '',
     plan: 'Pro Plan',
     profileType: 'business',
@@ -114,20 +114,13 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
     preferredTone: 'professional'
   };
 
-  // Dynamic user greeting name resolution (defaulting cleanly to "Clare" for user account)
+  // Greeting uses the logged-in user's first name; empty until session loads.
   const greetingName = useMemo(() => {
-    if (!user) return 'Clare';
-    const email = user.email?.toLowerCase() || '';
-    const name = user.name?.trim() || '';
-
-    if (email.includes('clare') || name.toLowerCase().includes('clare')) {
-      return 'Clare';
-    }
+    const name = user?.name?.trim() || '';
     if (name && name !== 'WIHGO User' && name !== 'Partner') {
-      const parts = name.split(/\s+/);
-      return parts[0] || 'Clare';
+      return name.split(/\s+/)[0] || '';
     }
-    return 'Clare';
+    return '';
   }, [user]);
 
   const safePlatforms = Array.isArray(platforms) ? platforms : [];
@@ -290,13 +283,17 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
   return (
     <div className="space-y-6 pb-20 md:pb-8">
       {/* ============================================================ */}
-      {/* 1. WELCOME BACK, CLARE                                       */}
+      {/* 1. WELCOME BACK                                              */}
       {/* ============================================================ */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-cyan-300 to-slate-200">{greetingName}</span> 👋
+              {greetingName ? (
+                <>Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-cyan-300 to-slate-200">{greetingName}</span> 👋</>
+              ) : (
+                <>Welcome back 👋</>
+              )}
             </h1>
           </div>
           <p className="text-xs font-semibold text-teal-400/90 tracking-wide mt-1 uppercase flex flex-wrap items-center gap-1.5">
@@ -707,7 +704,7 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
             onKeyDown={(e) => {
               if (e.key === 'Enter') handleCommandSubmit();
             }}
-            placeholder="Ask WIHGO anything (e.g. Catch me up, What needs my attention, Plan my day)..."
+            placeholder="Ask WihGo Mind anything (e.g. Catch me up, What needs my attention, Plan my day)..."
             className="w-full bg-slate-950/90 text-sm text-white placeholder-slate-400 rounded-2xl pl-4 pr-12 py-3.5 border border-teal-500/30 focus:border-teal-400 focus:outline-none shadow-inner"
           />
           <button

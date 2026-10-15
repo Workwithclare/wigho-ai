@@ -638,7 +638,7 @@ export const WihgoSplashMotionDashboard: React.FC<WihgoSplashMotionDashboardProp
                     </div>
 
                     <h4 className="text-sm font-bold text-white mt-2">
-                      Enterprise Proposal Confirmation — Sarah Jenkins (Apex Capital)
+                      Enterprise Proposal Confirmation — Enterprise Client
                     </h4>
                     <p className="text-xs text-slate-400 mt-1">
                       Received via Gmail: Client ready to sign annual SLA. Requires commercial scope sign-off before 12:00 PM EST.
@@ -685,7 +685,7 @@ export const WihgoSplashMotionDashboard: React.FC<WihgoSplashMotionDashboardProp
                     </div>
 
                     <h4 className="text-sm font-bold text-white mt-2">
-                      Inbound WhatsApp Partnership Request — Marcus Vance
+                      Inbound WhatsApp Partnership Request — New Partner Lead
                     </h4>
                     <p className="text-xs text-slate-400 mt-1">
                       Received via WhatsApp: &ldquo;We want to integrate WIHGO across 12 branch locations next week.&rdquo;
@@ -763,7 +763,7 @@ export const WihgoSplashMotionDashboard: React.FC<WihgoSplashMotionDashboardProp
                     </span>
                   </div>
                   <p className="text-xs text-slate-300 font-medium">
-                    &ldquo;Never offer discounts over 15% without Clare&apos;s explicit confirmation. Sarah prefers morning Hash or email updates.&rdquo;
+                    &ldquo;Never offer discounts over 15% without the owner&apos;s explicit confirmation.&rdquo;
                   </p>
                   <div className="pt-1 flex items-center gap-2 text-[10px] text-slate-400">
                     <ShieldCheck className="w-3.5 h-3.5 text-teal-400" />

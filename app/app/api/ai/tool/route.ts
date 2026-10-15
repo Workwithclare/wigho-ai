@@ -1,9 +1,18 @@
 import { NextResponse } from "next/server";
 import { askGemini, MIND_SYSTEM } from "@/lib/gemini";
+import { getSessionUser } from "@/lib/session";
+import { checkAiQuota, bumpAiUsage } from "@/lib/ai-limit";
 
 // AI tool endpoint (MyDay focus plan, assistant drafts).
 // Tries live Gemini first, falls back to a static plan when offline.
 export async function POST(req: Request) {
+  const user = await getSessionUser();
+  if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  const quota = await checkAiQuota(user.id);
+  if (!quota.ok) {
+    return NextResponse.json({ result: "Daily WihGo Mind limit reached — resets tomorrow." });
+  }
+  await bumpAiUsage(user.id);
   const body = await req.json().catch(() => ({}));
   const toolId = String(body.toolId || "tool-planner");
   const input = String(body.input || "").slice(0, 1500);

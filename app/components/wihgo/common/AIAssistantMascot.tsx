@@ -45,8 +45,8 @@ export const AIAssistantMascot: React.FC<AIAssistantMascotProps> = ({
       {/* Floating Action Bubbles around Mascot */}
       {showFloatingBubbles && (
         <>
-          <div className="absolute -top-3 left-0 bg-slate-900/90 border border-cyan-400/40 px-2.5 py-1.5 rounded-2xl text-[10px] font-bold text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.3)] flex items-center gap-1.5 animate-bounce-slow z-20">
-            <MessageSquare className="w-3 h-3 text-cyan-400" />
+          <div className="absolute -top-3 left-0 bg-slate-900/90 border border-[#2DD4A7]/40 px-2.5 py-1.5 rounded-2xl text-[10px] font-bold text-[#2DD4A7] shadow-[0_0_15px_rgba(45,212,167,0.3)] flex items-center gap-1.5 animate-bounce-slow z-20">
+            <MessageSquare className="w-3 h-3 text-[#2DD4A7]" />
             <span>Messages</span>
           </div>
 
@@ -70,43 +70,43 @@ export const AIAssistantMascot: React.FC<AIAssistantMascotProps> = ({
       {/* Main Mascot Robot Container */}
       <div className={`relative ${dimensions} flex items-center justify-center`}>
         {/* Outer Glowing Neon Ring & Aura */}
-        <div className={`absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-500/20 via-indigo-600/30 to-purple-600/20 blur-xl ${animated ? 'animate-pulse' : ''}`} />
-        <div className="absolute -inset-2 rounded-full border border-purple-500/30 border-dashed animate-spin-slow opacity-60" />
+        <div className={`pointer-events-none absolute inset-0 rounded-full bg-gradient-to-tr from-[#2DD4A7]/20 via-teal-600/30 to-[#2DD4A7]/15 blur-xl ${animated ? 'animate-pulse' : ''}`} />
+        <div className="pointer-events-none absolute -inset-2 rounded-full border border-[#2DD4A7]/40 border-dashed animate-spin-slow opacity-60" />
 
         {/* Robot Visual Head & Body Composite */}
-        <div className="relative z-10 w-full h-full rounded-3xl bg-gradient-to-b from-indigo-950 via-[#0E1528] to-[#0A0D18] border-2 border-indigo-500/40 shadow-[0_0_35px_rgba(99,102,241,0.4)] p-3 flex flex-col items-center justify-between overflow-hidden">
-          
+        <div className="relative z-10 w-full h-full rounded-3xl bg-gradient-to-b from-teal-950 via-[#0B1512] to-[#0A0D0B] border-2 border-[#2DD4A7]/40 shadow-[0_0_35px_rgba(45,212,167,0.4)] p-3 flex flex-col items-center justify-between overflow-hidden">
+
           {/* Subtle Top Antennas/Ears */}
           <div className="w-full flex justify-between px-2 -mt-1 z-10">
-            <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 border border-white shadow-[0_0_10px_#00F0FF] animate-ping" />
-            <div className="w-2.5 h-2.5 rounded-full bg-purple-400 border border-white shadow-[0_0_10px_#A855F7] animate-ping" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#2DD4A7] border border-white shadow-[0_0_10px_#2DD4A7] animate-ping" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#2DD4A7] border border-white shadow-[0_0_10px_#2DD4A7] animate-ping" />
           </div>
 
           {/* Robot Visor Screen */}
-          <div className="w-full flex-1 bg-black/80 rounded-2xl border border-indigo-500/30 p-2 flex flex-col items-center justify-center relative my-1 shadow-inner">
-            {/* Soft Cyan Glow inside visor */}
-            <div className="absolute inset-2 bg-gradient-to-r from-cyan-500/10 via-indigo-500/10 to-purple-500/10 rounded-xl blur-md" />
+          <div className="w-full flex-1 bg-black/80 rounded-2xl border border-[#2DD4A7]/30 p-2 flex flex-col items-center justify-center relative my-1 shadow-inner">
+            {/* Soft Teal-Green Glow inside visor */}
+            <div className="pointer-events-none absolute inset-2 bg-gradient-to-r from-[#2DD4A7]/10 via-teal-500/10 to-[#2DD4A7]/10 rounded-xl blur-md" />
 
             {/* Glowing Eyes */}
             <div className="flex items-center gap-4 z-10 my-auto">
               {/* Left Eye */}
-              <div className={`${eyeSize} rounded-full bg-cyan-400 shadow-[0_0_12px_#00F0FF] flex items-center justify-center transition-all ${animated ? 'animate-pulse' : ''}`}>
+              <div className={`${eyeSize} rounded-full bg-[#2DD4A7] shadow-[0_0_12px_#2DD4A7] flex items-center justify-center transition-all ${animated ? 'animate-pulse' : ''}`}>
                 <div className="w-1/3 h-1/3 rounded-full bg-white" />
               </div>
 
               {/* Right Eye */}
-              <div className={`${eyeSize} rounded-full bg-cyan-400 shadow-[0_0_12px_#00F0FF] flex items-center justify-center transition-all ${animated ? 'animate-pulse' : ''}`}>
+              <div className={`${eyeSize} rounded-full bg-[#2DD4A7] shadow-[0_0_12px_#2DD4A7] flex items-center justify-center transition-all ${animated ? 'animate-pulse' : ''}`}>
                 <div className="w-1/3 h-1/3 rounded-full bg-white" />
               </div>
             </div>
 
             {/* Friendly Smiling Curved Mouth */}
-            <div className="w-8 h-2 border-b-2 border-cyan-300 rounded-full z-10 mt-1 shadow-[0_0_8px_#00F0FF]" />
+            <div className="w-8 h-2 border-b-2 border-[#2DD4A7] rounded-full z-10 mt-1 shadow-[0_0_8px_#2DD4A7]" />
           </div>
 
           {/* Bottom Chest Indicator / Badge */}
-          <div className="flex items-center justify-center gap-1 text-[9px] font-black text-cyan-300 uppercase tracking-widest pt-1">
-            <Sparkles className="w-3 h-3 text-cyan-400" />
+          <div className="flex items-center justify-center gap-1 text-[9px] font-black text-[#2DD4A7] uppercase tracking-widest pt-1">
+            <Sparkles className="w-3 h-3 text-[#2DD4A7]" />
             <span>WihGo Mind</span>
           </div>
         </div>
@@ -114,7 +114,7 @@ export const AIAssistantMascot: React.FC<AIAssistantMascotProps> = ({
 
       {statusText && (
         <div className="mt-3 text-center">
-          <span className="text-xs font-semibold text-cyan-300 bg-cyan-500/10 border border-cyan-400/20 px-3 py-1 rounded-full">
+          <span className="text-xs font-semibold text-[#2DD4A7] bg-[#2DD4A7]/10 border border-[#2DD4A7]/20 px-3 py-1 rounded-full">
             {statusText}
           </span>
         </div>

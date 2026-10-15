@@ -2,18 +2,25 @@
 // GEMINI_API_KEY must stay on the server.
 const MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
 
-async function callOnce(key: string, prompt: string): Promise<Response> {
-  return fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${key}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { maxOutputTokens: 512, temperature: 0.7 },
-      }),
-    }
-  );
+async function callOnce(key: string, prompt: string, timeoutMs = 10000): Promise<Response> {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    return await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${key}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { maxOutputTokens: 512, temperature: 0.7 },
+        }),
+        signal: ctrl.signal,
+      }
+    );
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 export async function askGemini(prompt: string): Promise<string | null> {

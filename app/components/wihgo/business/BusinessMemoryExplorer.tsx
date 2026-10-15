@@ -72,10 +72,10 @@ export const BusinessMemoryExplorer: React.FC<BusinessMemoryExplorerProps> = ({
   const [newPlatform, setNewPlatform] = useState<PlatformId>('whatsapp');
 
   const SUGGESTED_QUERIES = [
-    "What did Sarah ask about last month?",
+    "What did we promise last month?",
     "Which customers are waiting for a response?",
     "What did we promise John?",
-    "Show me everything related to David Chen",
+    "Show me everything related to pricing",
     "What decisions need owner approval?"
   ];
 
@@ -183,7 +183,7 @@ export const BusinessMemoryExplorer: React.FC<BusinessMemoryExplorerProps> = ({
                   handleExecuteSearch(searchQuery);
                 }
               }}
-              placeholder="Ask business memory anything (e.g. 'What did Sarah ask about last month?', 'What did we promise John?')..."
+              placeholder="Ask business memory anything (e.g. 'What did we promise last month?', 'What did we discuss about pricing?')..."
               className="w-full bg-slate-950/90 text-sm text-white pl-11 pr-28 py-3.5 rounded-2xl border border-teal-500/30 focus:border-teal-400 focus:outline-none placeholder-slate-500 shadow-inner"
             />
             <button

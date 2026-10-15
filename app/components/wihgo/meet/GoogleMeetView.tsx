@@ -477,7 +477,7 @@ const MOCK_INITIAL_MEETINGS: CalendarEvent[] = [
   {
     id: 'meet-1',
     title: 'Horizon VC Seed Investment Round Intro',
-    description: 'Discussion with Sarah Johnson regarding WIHGO AI seed investment round.',
+    description: '',
     type: 'meeting',
     platform: 'meet',
     startTime: '2026-08-12T14:00:00',

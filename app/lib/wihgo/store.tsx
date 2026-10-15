@@ -102,15 +102,8 @@ interface WihgoStore {
 
 const Ctx = createContext<WihgoStore | null>(null);
 
-const clareUser: UserProfile = {
-  ...INITIAL_USER_PROFILE,
-  id: 'clare-demo',
-  name: 'Clare',
-  email: INITIAL_USER_PROFILE.email || 'clare@wihgo.ai',
-};
-
 export function WihgoProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<UserProfile>(clareUser);
+  const [user, setUser] = useState<UserProfile>(INITIAL_USER_PROFILE);
   const [platforms, setPlatforms] = useState<PlatformInfo[]>(INITIAL_PLATFORMS);
   const [conversations, setConversations] = useState<Conversation[]>(INITIAL_CONVERSATIONS);
   const [events, setEventsState] = useState<CalendarEvent[]>(INITIAL_CALENDAR_EVENTS);
@@ -127,10 +120,19 @@ export function WihgoProvider({ children }: { children: React.ReactNode }) {
   const sessionUser = (sessionData?.user as { id: string } | undefined) ?? null;
   const remoteMode = !!sessionUser;
 
+  const uid = sessionUser?.id ?? 'local';
   useEffect(() => {
-    setReminders(load('wihgo_reminders_clare-demo', INITIAL_REMINDERS));
-    setEventsState(load('wihgo_events_clare-demo', INITIAL_CALENDAR_EVENTS));
-    setPlatforms(load('wihgo_connectors_clare-demo', INITIAL_PLATFORMS));
+    if (sessionData?.user) {
+      setUser((prev) => ({
+        ...prev,
+        id: (sessionData.user as any).id || prev.id,
+        name: sessionData.user.name || prev.name,
+        email: sessionData.user.email || prev.email,
+      }));
+    }
+    setReminders(load(`wihgo_reminders_${uid}`, []));
+    setEventsState(load(`wihgo_events_${uid}`, []));
+    setPlatforms(load(`wihgo_connectors_${uid}`, INITIAL_PLATFORMS));
     if (remoteMode) {
       // Real Neon data for the logged-in user (every query filtered by user id server-side).
       fetch('/api/tasks')
@@ -142,17 +144,17 @@ export function WihgoProvider({ children }: { children: React.ReactNode }) {
           }
         })
         .catch(() => {
-          setTasks(load('wihgo_tasks_clare-demo', INITIAL_TASKS));
+          setTasks([]);
           setRemote(false);
         });
     } else {
-      setTasks(load('wihgo_tasks_clare-demo', INITIAL_TASKS));
+      setTasks([]);
       setRemote(false);
     }
   }, [remoteMode]);
-  useEffect(() => save('wihgo_tasks_clare-demo', tasks), [tasks]);
-  useEffect(() => save('wihgo_reminders_clare-demo', reminders), [reminders]);
-  useEffect(() => save('wihgo_events_clare-demo', events), [events]);
+  useEffect(() => save(`wihgo_tasks_${uid}`, tasks), [tasks]);
+  useEffect(() => save(`wihgo_reminders_${uid}`, reminders), [reminders]);
+  useEffect(() => save(`wihgo_events_${uid}`, events), [events]);
 
   const toggleSound = () => setSoundEnabled((v) => !v);
 
@@ -227,7 +229,7 @@ export function WihgoProvider({ children }: { children: React.ReactNode }) {
       id: `msg-${Date.now()}`,
       conversationId: convId,
       platform,
-      senderName: user.name || 'Clare',
+      senderName: user.name || 'You',
       content: text,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       isFromUser: true,
@@ -244,7 +246,7 @@ export function WihgoProvider({ children }: { children: React.ReactNode }) {
       const next = prev.map((p) =>
         p.id === id ? { ...p, connected: !p.connected, lastSynced: !p.connected ? 'Just now' : 'Disconnected' } : p
       );
-      save('wihgo_connectors_clare-demo', next);
+      save(`wihgo_connectors_${uid}`, next);
       return next;
     });
     playChime('notify', soundEnabled);
@@ -252,11 +254,12 @@ export function WihgoProvider({ children }: { children: React.ReactNode }) {
 
   const markAllRead = () => setNotifications((p) => p.map((n) => ({ ...n, read: true })));
 
-  const logout = () => {
+  const logout = async () => {
     try {
-      localStorage.removeItem('wihgo_demo_auth');
+      const { signOut } = await import('../auth-client');
+      await signOut();
     } catch {}
-    window.location.href = '/';
+    window.location.href = '/login';
   };
 
   const val: WihgoStore = {

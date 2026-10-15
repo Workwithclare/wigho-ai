@@ -56,9 +56,9 @@ export const MyDayView: React.FC<MyDayViewProps> = ({
       setAiPlanText(data.result || 'AI Daily Focus Plan generated.');
     } catch (err) {
       setAiPlanText(
-        `09:00 AM - 10:00 AM: Priority WhatsApp Response -> Send Q3 Catalog to David Chen (Apex Tech)\n` +
+        `09:00 AM - 10:00 AM: Priority inbox sweep -> answer the most urgent threads first\n` +
         `10:30 AM - 11:30 AM: Hash Launch Review -> Approve campaign assets from Alex Vance\n` +
-        `02:00 PM - 02:30 PM: Calendar Meeting -> VC Intro Call with Sarah Johnson (Horizon VC)\n` +
+        `02:00 PM - 02:30 PM: Calendar block -> meetings and calls as scheduled\n` +
         `04:00 PM - 05:00 PM: Social Sync -> Review Camera & TikTok engagement metrics`
       );
     } finally {

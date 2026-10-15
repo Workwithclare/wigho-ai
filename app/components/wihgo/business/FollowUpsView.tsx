@@ -200,6 +200,12 @@ export const FollowUpsView: React.FC<FollowUpsViewProps> = ({
 
       {/* Follow ups Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {filteredItems.length === 0 && (
+          <div className="p-6 rounded-3xl border border-slate-800 bg-slate-900/60 text-center md:col-span-2">
+            <p className="text-sm font-bold text-white">No follow-ups yet</p>
+            <p className="text-xs text-slate-400 mt-1">Add your first follow-up with contact name and topic above.</p>
+          </div>
+        )}
         {filteredItems.map(item => (
           <div
             key={item.id}

@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { WihgoProvider, useWihgo } from '../../lib/wihgo/store';
 import { Header } from './navigation/Header';
@@ -83,6 +83,25 @@ function ShellInner({ children }: { children: React.ReactNode }) {
   const activeTab = ROUTE_TO_TAB[pathname || ''] || 'home';
   const unread = s.conversations.reduce((a, c) => a + (c?.unreadCount || 0), 0);
 
+  // Optimistic highlight: updates the instant the item is clicked.
+  const [pendingTab, setPendingTab] = useState<string | null>(null);
+  useEffect(() => {
+    setPendingTab(null);
+  }, [pathname]);
+
+  // Prefetch every route once so sidebar switches feel instant (0ms).
+  useEffect(() => {
+    const seen = new Set<string>();
+    Object.values(TAB_TO_ROUTE).forEach((route) => {
+      if (!seen.has(route)) {
+        seen.add(route);
+        try {
+          router.prefetch(route);
+        } catch {}
+      }
+    });
+  }, [router]);
+
   const navigate = (tab: string) => {
     if (tab === 'more') {
       s.setDrawerOpen(true);
@@ -93,9 +112,11 @@ function ShellInner({ children }: { children: React.ReactNode }) {
       return;
     }
     const route = TAB_TO_ROUTE[tab] || '/dashboard';
+    setPendingTab(tab);
     router.push(route);
     s.setDrawerOpen(false);
   };
+  const shownTab = pendingTab || activeTab;
 
   const openWorkspace = (platformId: any) => {
     if (platformId === 'calendar') return router.push('/calendar');
@@ -104,7 +125,7 @@ function ShellInner({ children }: { children: React.ReactNode }) {
     router.push('/messages');
   };
 
-  const firstName = (s.user.name || 'Clare').split(' ')[0];
+  const firstName = (s.user.name || '').split(' ')[0];
 
   return (
     <div className="min-h-screen bg-[#07090E] text-slate-100 font-sans selection:bg-teal-500 selection:text-black relative overflow-x-hidden flex flex-col">
@@ -122,7 +143,7 @@ function ShellInner({ children }: { children: React.ReactNode }) {
       />
       <div className="flex flex-1 pt-16">
         <Sidebar
-          activeTab={activeTab}
+          activeTab={shownTab}
           setActiveTab={navigate}
           unreadCountTotal={unread}
           openAiAssistant={() => s.setAiOpen(true)}
@@ -135,7 +156,7 @@ function ShellInner({ children }: { children: React.ReactNode }) {
         <MobileDrawer
           isOpen={s.drawerOpen}
           onClose={() => s.setDrawerOpen(false)}
-          activeTab={activeTab}
+          activeTab={shownTab}
           setActiveTab={navigate}
           unreadCountTotal={unread}
           openAiAssistant={() => s.setAiOpen(true)}
@@ -148,14 +169,18 @@ function ShellInner({ children }: { children: React.ReactNode }) {
         <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full transition-all">
           <div className="mb-4">
             <p className="text-sm text-slate-400">
-              Welcome back, <span className="text-white font-bold">{firstName}</span>
+              {firstName ? (
+                <>Welcome back, <span className="text-white font-bold">{firstName}</span></>
+              ) : (
+                <>Welcome back</>
+              )}
             </p>
           </div>
           {children}
         </main>
       </div>
       <BottomNav
-        activeTab={activeTab}
+        activeTab={shownTab}
         setActiveTab={navigate}
         unreadCountTotal={unread}
         openAiAssistant={() => s.setAiOpen(true)}

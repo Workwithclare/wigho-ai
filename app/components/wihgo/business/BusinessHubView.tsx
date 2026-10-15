@@ -95,9 +95,9 @@ export const BusinessHubView: React.FC<BusinessHubViewProps> = ({
   } | null>(null);
 
   // AI Continuity State
-  const [selectedContinuityCustomer, setSelectedContinuityCustomer] = useState<string>('David Chen');
-  const [continuityData, setContinuityData] = useState<ContinuityContext>(() => 
-    BusinessMemoryService.getContinuityContext('David Chen')
+  const [selectedContinuityCustomer, setSelectedContinuityCustomer] = useState<string>('');
+  const [continuityData, setContinuityData] = useState<ContinuityContext>(() =>
+    BusinessMemoryService.getContinuityContext('')
   );
 
   // Business Insights State
@@ -189,27 +189,12 @@ export const BusinessHubView: React.FC<BusinessHubViewProps> = ({
     let confidence = 0.94;
     let entities: string[] = [];
 
-    if (lower.includes('sarah') || lower.includes('support') || lower.includes('sla')) {
-      answer = 'Sarah Jenkins (Lumina Design) requested clarity on 24/7 weekend SLA support 18 hours ago. We previously sent the initial onboarding presentation, and an approved decision exists to offer a 4-hour weekend response window for annual commitments.';
-      entities = ['Sarah Jenkins', 'Lumina Design', 'Email Support SLA'];
-      confidence = 0.98;
-    } else if (lower.includes('john') || lower.includes('promise') || lower.includes('acme')) {
-      answer = 'We promised John Doe (Acme Corp) a customized multi-channel architecture plan detailing Slack, Gmail, and WhatsApp sync without data overlap. Deadline is this Friday at 5:00 PM.';
-      entities = ['John Doe', 'Acme Corp', 'Architecture Plan Promise'];
-      confidence = 0.99;
-    } else if (lower.includes('david') || lower.includes('pricing') || lower.includes('catalog') || lower.includes('tier')) {
-      answer = 'David Chen (Apex Tech) is requesting updated Q3 product catalog and Tier 2 volume discount schedule for 25 seats on WhatsApp. A 15% discount has been approved by the owner and is pending dispatch.';
-      entities = ['David Chen', 'Apex Tech Solutions', 'Volume Tier Matrix'];
-      confidence = 0.97;
-    } else if (lower.includes('jessica') || lower.includes('lead') || lower.includes('instagram')) {
-      answer = 'Jessica Miller (@jessica_design32) is a hot inbound agency lead who messaged twice after viewing our Connect Hub showcase reel. She is looking to license 12 client accounts.';
-      entities = ['Jessica Miller', 'Miller Creative', 'Agency Reseller Lead'];
-      confidence = 0.95;
-    } else if (matches.length > 0) {
+    if (matches.length > 0) {
       answer = `Based on connected business memory: ${matches[0].detail}`;
       entities = [matches[0].entityName, matches[0].entityType];
+      confidence = 0.94;
     } else {
-      answer = `WIHGO does not have enough verified records for "${q}". Try querying by customer name (Sarah, David, John, Jessica) or topic (pricing, promise, SLA, meeting).`;
+      answer = `No verified records found for "${q}" yet. Add follow-ups and connect your channels, then ask about a customer name or topic (pricing, promise, SLA, meeting).`;
       confidence = 0.65;
     }
 
@@ -248,24 +233,22 @@ export const BusinessHubView: React.FC<BusinessHubViewProps> = ({
       let suggestion: { label: string; tab?: string; platform?: PlatformId } | undefined = undefined;
 
       if (lower.includes('attention') || lower.includes('need me') || lower.includes('urgent')) {
-        reply = `You currently have **${counts.total} items requiring attention**:\n\n1. 🔴 **Sarah Jenkins (Email)**: Waiting 18 hours for weekend SLA response.\n2. 🟡 **David Chen (WhatsApp)**: Waiting for revised Q3 Catalog and Tier 2 volume schedule.\n3. 🟡 **Alex Vance (Hash)**: Launch campaign creative assets ready for review.\n4. 🟢 **Jessica Miller (Camera)**: Hot inbound lead ready for agency tier demo.\n5. 🔵 **John Doe (Acme Corp)**: Architecture blueprint deliverable due this Friday.`;
+        reply = counts.total > 0
+          ? `You currently have **${counts.total} items requiring attention**. Open the Attention center to review them.`
+          : `Nothing needs your attention right now. Add follow-ups or connect a channel and I will surface what matters here.`;
         suggestion = { label: 'View What Needs Me', tab: 'attention' };
-        citations = ['Attention Engine v1', 'Gmail & WhatsApp Inboxes'];
+        citations = ['Attention Engine v1', 'Connected Inboxes'];
       } else if (lower.includes('promise') || lower.includes('commit')) {
-        reply = `Here are active commitments made to your customers:\n\n• **John Doe (Acme Corp)**: Customized multi-channel integration plan by Friday 5:00 PM (Responsible: Clare).\n• **David Chen (Apex Tech)**: Q3 volume discount tiers PDF today (Responsible: Clare).\n• **Sarah Jenkins (Lumina Design)**: Written weekend SLA terms today.\n• **Jessica Miller (Miller Creative)**: Agency Partner Deck by tomorrow.`;
+        reply = `No recorded commitments yet. Add your first follow-up with a promise and deadline, and I will track it here.`;
         suggestion = { label: 'Explore Commitments', tab: 'memory' };
         citations = ['Business Memory Commitments Table'];
       } else if (lower.includes('lead') || lower.includes('sales') || lower.includes('opportunity')) {
-        reply = `Your top prospective opportunities right now:\n\n1. 🟢 **Jessica Miller (Miller Creative)**: High intent for 12-seat agency tier (~+$9,600 ARR).\n2. 🟢 **David Chen (Apex Tech)**: 25 seats onboarding for Q3 operations (~+$12,500/yr).\n3. 🟢 **Sarah Johnson (Horizon VC)**: Venture partnership intro requested for Thursday 2:00 PM.`;
+        reply = `No opportunities on record yet. Connect your channels and add follow-ups to build your pipeline view.`;
         suggestion = { label: 'Open Insights', tab: 'insights' };
-        citations = ['Business Insights Engine', 'Instagram & Email Channels'];
-      } else if (lower.includes('sarah')) {
-        reply = `**Context for Sarah Jenkins (Lumina Design)**:\n\n• **Last interaction**: Sent email 18 hours ago asking if Premium includes dedicated weekend support.\n• **Current status**: Waiting for your confirmation.\n• **Recommended action**: Confirm 4-hour weekend response window and send approved terms.`;
-        suggestion = { label: 'Open Continuity Card', tab: 'continuity' };
-        citations = ['Gmail Thread #lumina-support', 'Customer Continuity Graph'];
+        citations = ['Business Insights Engine'];
       } else if (lower.includes('summarize') || lower.includes('activity') || lower.includes('week')) {
-        reply = `**Weekly Business Activity Summary**:\n\n• **Customer Communications**: 18 cross-channel conversations across WhatsApp (8), Email (5), Camera (3), Hash (2).\n• **Response Rate**: 92% SLA compliance (1 item pending SLA recovery: Sarah Jenkins).\n• **Deals in Pipeline**: $22,100 pipeline across Apex Tech, Miller Creative, and Acme Corp.\n• **Active Commitments**: 4 promises recorded with 0 overdue.`;
-        citations = ['Unified Activity Log', 'Cross-Platform Aggregator'];
+        reply = `No business activity recorded yet. Once you connect channels and log follow-ups, I will summarize your week here.`;
+        citations = ['Unified Activity Log'];
       } else {
         reply = `Based on your connected business memory: I found relevant context across your Gmail, WhatsApp, and Camera interactions. No critical unhandled emergencies detected outside of the ${counts.urgent} urgent items listed in your Attention center.`;
       }
@@ -650,7 +633,7 @@ export const BusinessHubView: React.FC<BusinessHubViewProps> = ({
                   value={memorySearchQuery}
                   onChange={(e) => setMemorySearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleMemorySearch()}
-                  placeholder='e.g., "What did Sarah ask about last month?", "What did we promise John?", "Pricing"'
+                  placeholder='e.g., "What did we promise last month?", "Pricing", "Meeting"'
                   className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-950 border border-slate-800 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-teal-500"
                 />
               </div>
@@ -668,7 +651,7 @@ export const BusinessHubView: React.FC<BusinessHubViewProps> = ({
               <span className="text-[11px] text-slate-500 font-medium">Try asking:</span>
               {[
                 'What did we promise John?',
-                'What did Sarah ask about?',
+                'What did we promise last month?',
                 'Who is waiting for pricing?',
                 'Show all hot leads'
               ].map((suggestion, idx) => (
@@ -827,7 +810,10 @@ export const BusinessHubView: React.FC<BusinessHubViewProps> = ({
 
           {/* Contact Selector Tabs */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            {['David Chen', 'Sarah Jenkins', 'Jessica Miller', 'John Doe (Acme Corp)'].map((name) => (
+            <p className="text-xs text-slate-500">
+              No contacts yet. Add your first follow-up and continuity cards will appear here.
+            </p>
+            {([] as string[]).map((name) => (
               <button
                 key={name}
                 onClick={() => handleSelectContinuityContact(name)}
@@ -1207,7 +1193,6 @@ export const BusinessHubView: React.FC<BusinessHubViewProps> = ({
               'What needs my attention today?',
               'Which leads look most promising?',
               'What did we promise our customers this week?',
-              'What happened with Sarah?',
               'Summarize my business activity this week'
             ].map((q, idx) => (
               <button

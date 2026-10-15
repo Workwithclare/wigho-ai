@@ -121,10 +121,10 @@ export const BusinessAssistantView: React.FC<BusinessAssistantViewProps> = ({
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/ai/assistant', {
+      const res = await fetch('/api/ai/orchestrate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: `[BUSINESS ASSISTANT] ${textToSend}` })
+        body: JSON.stringify({ message: `[BUSINESS ASSISTANT] ${textToSend}`, task: 'chat' })
       });
 
       const data = await res.json();

@@ -73,6 +73,12 @@ export const TasksView: React.FC<TasksViewProps> = ({
 
       {/* Task List */}
       <div className="space-y-3">
+        {tasks.length === 0 && (
+          <div className="p-6 rounded-3xl border border-slate-800 bg-slate-900/60 text-center">
+            <p className="text-sm font-bold text-white">No tasks yet</p>
+            <p className="text-xs text-slate-400 mt-1">Add your first task with the New Task button above.</p>
+          </div>
+        )}
         {tasks.map((t) => (
           <div
             key={t.id}
