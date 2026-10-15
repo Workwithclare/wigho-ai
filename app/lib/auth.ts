@@ -15,8 +15,14 @@ export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   trustedOrigins: [
     "http://localhost:3000",
+    "http://localhost:4000",
     "https://wihgo.netlify.app",
-  ],
+    process.env.BETTER_AUTH_URL,
+    process.env.NEXT_PUBLIC_APP_URL,
+  ].filter(Boolean) as string[],
+  // APK/WebView clients send no reliable Origin — do not block them on CSRF.
+  // Session cookies + user_id scoping still enforced on every request.
+  advanced: { disableCSRFCheck: true },
   database: drizzleAdapter(db, { provider: "pg" }),
   emailAndPassword: {
     enabled: true,
