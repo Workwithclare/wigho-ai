@@ -2,12 +2,29 @@
   "name": "WIHGO AI Connect Hub",
   "short_name": "WIHGO AI",
   "description": "Connect. Collaborate. Achieve. Your AI business memory and attention platform.",
+  "id": "/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#081012",
   "theme_color": "#073F42",
+  "categories": ["business", "productivity"],
+  "prefer_related_applications": false,
+  "screenshots": [
+    {
+      "src": "/screenshots/shot-mobile.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshots/shot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
   "icons": [
     {
       "src": "/icons/icon-192.png",
