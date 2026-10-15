@@ -13,6 +13,19 @@ function Screen() {
   const { data: sessionData } = useSession();
   const remoteMode = !!sessionData?.user;
   const [items, setItems] = useState<FollowUpItem[]>([]);
+  const [profile, setProfile] = useState<{ name: string; email: string } | null>(null);
+
+  useEffect(() => {
+    if (!remoteMode) {
+      setProfile(null);
+      return;
+    }
+    // Source of truth for the greeting: the real account row in Neon.
+    fetch('/api/profile')
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((p) => setProfile({ name: String(p.name || ''), email: String(p.email || '') }))
+      .catch(() => setProfile(null));
+  }, [remoteMode]);
 
   const reload = useCallback(() => {
     if (!remoteMode) {
@@ -49,8 +62,8 @@ function Screen() {
       <WihgoDashboard
         tasks={s.tasks}
         followUps={items}
-        userName={(sessionData?.user as any)?.name || ''}
-        userEmail={sessionData?.user?.email || ''}
+        userName={profile?.name || (sessionData?.user as any)?.name || ''}
+        userEmail={profile?.email || sessionData?.user?.email || ''}
         onToggleTask={s.toggleTask}
         onToggleFollowUp={toggleItem}
       />

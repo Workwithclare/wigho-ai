@@ -4,6 +4,15 @@ import { db } from "@/lib/db";
 import { user } from "@/lib/schema";
 import { getSessionUser } from "@/lib/session";
 
+export async function GET() {
+  const sessionUser = await getSessionUser();
+  if (!sessionUser) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  const rows = await db.select().from(user).where(eq(user.id, sessionUser.id));
+  const row = rows[0];
+  if (!row) return NextResponse.json({ error: "not found" }, { status: 404 });
+  return NextResponse.json({ id: row.id, name: row.name, email: row.email });
+}
+
 export async function PATCH(req: Request) {
   const sessionUser = await getSessionUser();
   if (!sessionUser) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
