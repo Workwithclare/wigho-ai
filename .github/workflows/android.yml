@@ -17,7 +17,7 @@ jobs:
       run:
         working-directory: app
     steps:
-      - name: Checkout
+      name: checkout
         uses: actions/checkout@v4
 
       - name: Setup Node
