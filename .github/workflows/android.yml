@@ -36,6 +36,9 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Verify Android platform
         run: test -d android && test -f android/gradlew && test -f android/capacitor.settings.gradle
 
