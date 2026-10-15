@@ -51,7 +51,7 @@ export async function POST(req: Request) {
     reply,
     metadata: {
       provider: "GEMINI",
-      model: process.env.GEMINI_MODEL || "gemini-3.8-flash",
+      model: process.env.GEMINI_MODEL || "gemini-flash-latest",
       latencyMs: Date.now() - started,
       status: "active",
     },
