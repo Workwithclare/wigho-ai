@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">WIHGO AI</string>
+    <string name="title_activity_main">WIHGO AI</string>
+    <string name="package_name">ai.wihgo.connecthub</string>
+    <string name="custom_url_scheme">ai.wihgo.connecthub</string>
+</resources>
