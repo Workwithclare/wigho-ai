@@ -36,23 +36,9 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Verify Android platform
-        run: test -d android && test -f android/gradlew && test -f android/capacitor.settings.gradle
-
-      - name: Brand app icons
-        run: |
-          for d in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
-            cp public/icons/icon-512.png android/app/src/main/res/mipmap-${d}/ic_launcher.png || true
-            cp public/icons/icon-512.png android/app/src/main/res/mipmap-${d}/ic_launcher_round.png || true
-          done
-
       - name: Build debug APK
         run: |
           cd android
-          chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK artifact
