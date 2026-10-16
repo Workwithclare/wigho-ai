@@ -26,7 +26,7 @@ import { WhatsAppIcon } from '../common/WhatsAppIcon';
 interface FollowUpsViewProps {
   onOpenWorkspace: (platformId: PlatformId) => void;
   openAiAssistant: () => void;
-  // Optional live data (real Neon commitments). Falls back to local demo state.
+  // Optional live data (real Neon commitments). Falls back to empty local state.
   items?: FollowUpItem[];
   onToggleItem?: (id: string) => void;
   onAddItem?: (contactName: string, topic: string) => void;
@@ -43,7 +43,7 @@ export const FollowUpsView: React.FC<FollowUpsViewProps> = ({
 }) => {
   const [localUps, setLocalUps] = useState<FollowUpItem[]>(() => {
     try {
-      const raw = localStorage.getItem('wihgo_followups_clare-demo');
+      const raw = localStorage.getItem('wihgo_followups_local');
       if (raw) return JSON.parse(raw);
     } catch {}
     return INITIAL_FOLLOW_UPS;
@@ -52,7 +52,7 @@ export const FollowUpsView: React.FC<FollowUpsViewProps> = ({
   const setFollowUps: React.Dispatch<React.SetStateAction<FollowUpItem[]>> = ((u: React.SetStateAction<FollowUpItem[]>) => {
     const next = typeof u === 'function' ? (u as (p: FollowUpItem[]) => FollowUpItem[])(followUps) : u;
     if (items) {
-      try { localStorage.setItem('wihgo_followups_clare-demo', JSON.stringify(next)); } catch {}
+      try { localStorage.setItem('wihgo_followups_local', JSON.stringify(next)); } catch {}
     } else {
       setLocalUps(next);
     }
@@ -61,7 +61,7 @@ export const FollowUpsView: React.FC<FollowUpsViewProps> = ({
   const [newTopic, setNewTopic] = useState('');
   const persist = (items: FollowUpItem[]) => {
     setFollowUps(items);
-    try { localStorage.setItem('wihgo_followups_clare-demo', JSON.stringify(items)); } catch {}
+    try { localStorage.setItem('wihgo_followups_local', JSON.stringify(items)); } catch {}
   };
   const [filter, setFilter] = useState<'all' | 'due_today' | 'pending' | 'completed'>('all');
 
@@ -94,7 +94,7 @@ export const FollowUpsView: React.FC<FollowUpsViewProps> = ({
       }
       return item;
       });
-      try { localStorage.setItem('wihgo_followups_clare-demo', JSON.stringify(next)); } catch {}
+      try { localStorage.setItem('wihgo_followups_local', JSON.stringify(next)); } catch {}
       return next;
     });
   };
@@ -105,7 +105,7 @@ export const FollowUpsView: React.FC<FollowUpsViewProps> = ({
     }
     setFollowUps(prev => {
       const next = prev.filter(item => item.id !== id);
-      try { localStorage.setItem('wihgo_followups_clare-demo', JSON.stringify(next)); } catch {}
+      try { localStorage.setItem('wihgo_followups_local', JSON.stringify(next)); } catch {}
       return next;
     });
   };

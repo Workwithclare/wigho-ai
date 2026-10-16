@@ -1,6 +1,6 @@
 /* WIHGO AI service worker — app shell precache + offline fallback.
    Never caches /api/* or auth routes (/login, /signup). */
-const CACHE = 'wihgo-shell-v4';
+const CACHE = 'wihgo-shell-v5';
 const PRECACHE = [
   '/',
   '/offline',
